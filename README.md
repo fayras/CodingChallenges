@@ -7,7 +7,7 @@ Alle zwei Wochen gibt es eine neue Aufgabe, welche innerhalb der nächsten zwei 
 ### Erste Schritte
 
 Sobald ihr das Repository geklont habt, könnt ihr einmal `npm run init` ausführen. Danach stehen euch folgende Befehle zur Verfügung:
-```md
+```markdown
 **challenge new --name=NAME [--electron]**
 Nur dann interessant, wenn es ums Erzeugen von neuen Aufgaben geht.
 
