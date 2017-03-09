@@ -4,6 +4,9 @@ Eine Ansammlung verschiedener Programmieraufgaben.
 Alle zwei Wochen gibt es eine neue Aufgabe, welche innerhalb der nächsten zwei Wochen bearbeitet werden soll.
 Alle Aufgaben werden in der Node.js Umgebung gebaut, Informationen zu einzelnen Aufgaben gibt es immer in dem Ordner der Aufgabe.
 
+## Abgabefristen
+
+_coming soon..._
 
 ## Erste Schritte
 
@@ -26,7 +29,4 @@ challenge help
 ```
 <i>TODO: Gibt Hilfen zu den verschiedenen Befehlen aus.</i>
 
-
-## Abgabefristen
-
-_coming soon..._
+## Abgaben
