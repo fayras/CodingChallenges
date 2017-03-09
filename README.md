@@ -30,3 +30,20 @@ challenge help
 <i>TODO: Gibt Hilfen zu den verschiedenen Befehlen aus.</i>
 
 ## Abgaben
+
+#### Schritt 1
+Gibt es eine neue Aufgabe, so sollte ein neuer Branch aus `master` ausgecheckt werden mit dem Namen
+```
+[Nummer der Aufgabe]-[Euer Name] // Der Name kann euer Name oder auch der Benutzername bei Github sein.
+Z.B.: 01-fayras
+```
+
+#### Schritt 2
+Tobt euch beim Programmieren aus! :D
+
+#### Schritt 3
+Sobald ihr fertig mit der Aufgabe seid, sollte ein Pull Request in den master Branch erstellt werden.
+Habt ihr Anmerkungen zu eurer Lösung, worauf ich beim Testen achten soll: Als Kommentar an den PR anhängen.
+
+#### Schritt 4 (Optional)
+Damit beim PR nur die nötigen Dateien verglichen werden, wird für jede neue Aufgabe ein neuer Branch erzeugt. Ich würde euch raten, aber noch einen Branch für euch selbst zu erzeugen, in welchen ihr eure Lösung aus Schritt 2  selbst auch merget, damit euer Code nicht verloren geht.
