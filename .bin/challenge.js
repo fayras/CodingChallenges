@@ -1,8 +1,8 @@
 #! /usr/bin/env node
 
-const create = require('./new-challenge.js');
-const run = require('./run-challenge.js');
-const help = require('./help-challenge.js');
+const create = require('./methods/new-challenge.js');
+const run = require('./methods/run-challenge.js');
+const help = require('./methods/help-challenge.js');
 
 let userArgs = process.argv.slice(2);
 let command = userArgs[0];
