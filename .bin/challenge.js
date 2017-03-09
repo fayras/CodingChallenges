@@ -21,3 +21,5 @@ switch(command) {
   default:
     console.log(`Unknown command. Run "challenge help" for help.`);
 }
+
+// Test
