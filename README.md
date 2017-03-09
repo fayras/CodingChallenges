@@ -2,9 +2,13 @@
 
 Eine Ansammlung verschiedener Programmieraufgaben.
 Alle zwei Wochen gibt es eine neue Aufgabe, welche innerhalb der nächsten zwei Wochen bearbeitet werden soll.
+Alle Aufgaben werden in der Node.js Umgebung gebaut, Informationen zu einzelnen Aufgaben gibt es immer in dem Ordner der Aufgabe.
 
 
-### Erste Schritte
+## Erste Schritte
+
+Alle Aufgaben sollten verutlich mit jeder Node-Version kompatibel sein, um Fehler auf Grund von verschiedenen Versionen zu vermeiden, wird Node 7.5+ und npm 4.1+ empfohlen. Welche Version installiert ist, kann mit `node -v` oder `npm -v` überprüft werden.
+
 
 Sobald ihr das Repository geklont habt, könnt ihr einmal `npm run init` ausführen. Danach stehen euch folgende Befehle zur Verfügung:
 ```
@@ -22,6 +26,7 @@ challenge help
 ```
 <i>TODO: Gibt Hilfen zu den verschiedenen Befehlen aus.</i>
 
-### Abgabefristen
+
+## Abgabefristen
 
 _coming soon..._
