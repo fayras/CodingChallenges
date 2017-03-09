@@ -13,7 +13,7 @@ function copyAndReplace(from, to, replacement) {
 
         let result;
         if(from.includes('package.json')) {
-          result = data.replace(/{{ title }}/g, slug(replacement));
+          result = data.replace(/{{ title }}/g, slug(replacement).toLowerCase());
         } else {
           result = data.replace(/{{ title }}/g, replacement);
         }
