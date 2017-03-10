@@ -5,10 +5,7 @@ module.exports = function(challenge, basePath) {
   if(!challenge) {
     return process.cwd();
   }
-
-  return fs.realpathSync(
-    path.dirname(fs.realpathSync(basePath)) +
-    '/../' +
-    challenge
-  );
+  
+  const baseDir = path.dirname(fs.realpathSync(basePath));
+  return fs.realpathSync(`${baseDir}/../${challenge}`);
 }
