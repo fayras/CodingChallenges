@@ -12,6 +12,7 @@
     "init": "npm link && npm install"
   },
   "dependencies": {
+    "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "slug": "^0.9.1"
   }

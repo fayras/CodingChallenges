@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const slug = require('slug');
 const mkdirp = require('mkdirp');
+const minimist = require('minimist');
 
 function copyAndReplace(from, to, replacement) {
   return new Promise((resolve, reject) => {
@@ -32,32 +33,27 @@ function copyAndReplace(from, to, replacement) {
   });
 }
 
-function createNewChallenge(args, basePath) {
-  let name = null;
+function createNewChallenge(userArgs, basePath) {
   let type = 'simple';
-  for(let i = 0; i < args.length; i++) {
-    if(args[i].includes('--name=')) {
-      name = args[i].replace('--name=', '');
-      if (name.charAt(0) === '"' && name.charAt(name.length -1) === '"') {
-        name = name.substr(1, name.length - 2);
-      }
-    }
-    if(args[i] == '--electron') {
-      type = 'electron';
-    }
-    if(args[i] == '--p5') {
-      type = 'p5';
-    }
+  const args = minimist(userArgs, {
+    alias: {'n': 'name'}
+  });
+
+  if(args.electron) {
+    type = 'electron';
+  }
+  if(args.p5) {
+    type = 'p5';
   }
 
-  if(!name) {
-    console.error('Parameter "name" is required. Specified with "--name=NAME_OF_CHALLENGE".');
+  if(!args.name) {
+    console.error('Parameter "name" is required. Specified with --name="NAME_OF_CHALLENGE".');
     process.exit(1);
   }
 
   basePath = path.dirname(fs.realpathSync(basePath));
   let templatePath = [basePath, 'templates', type, ''].join(path.sep);
-  let targetPath = [basePath, '..', 'challenges', name, ''].join(path.sep);
+  let targetPath = [basePath, '..', 'challenges', args.name, ''].join(path.sep);
 
   fs.readdir(templatePath, (err, files) => {
     if(err) {
@@ -67,7 +63,7 @@ function createNewChallenge(args, basePath) {
 
     for(let i = 0; i < files.length; i++) {
       let filename = files[i];
-      copyAndReplace(templatePath + filename, targetPath + filename, name)
+      copyAndReplace(templatePath + filename, targetPath + filename, args.name)
         .then(() => console.log(`File ${filename} created.`));
     }
   });
