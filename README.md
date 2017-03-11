@@ -27,7 +27,7 @@ challenge run|start [challenge/NAME_DER_AUFGABE]
 ```
 challenge help
 ```
-<i>TODO: Gibt Hilfen zu den verschiedenen Befehlen aus.</i>
+<i>Gibt Hilfen zu den verschiedenen Befehlen aus.</i>
 
 ## Abgaben
 
