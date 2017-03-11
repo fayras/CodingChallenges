@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-require('pretty-error').start();
+require('pretty-error').start().skipNodeFiles().skipPath('bootstrap_node.js');
 const create = require('./methods/new-challenge.js');
 const run = require('./methods/run-challenge.js');
 const help = require('./methods/help-challenge.js');
@@ -20,5 +20,8 @@ switch(command) {
     help();
     break;
   default:
-    console.log(`Unknown command. Run "challenge help" for help.`);
+    console.log(`
+    \x1b[1m\x1b[41mError\x1b[0m: \x1b[1mUnknown command.\x1b[0m
+    `);
+    help();
 }

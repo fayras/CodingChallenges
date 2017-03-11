@@ -34,11 +34,11 @@ function copyAndReplace(from, to, replacement) {
 }
 
 function createNewChallenge(userArgs, basePath) {
-  let type = 'simple';
   const args = minimist(userArgs, {
     alias: {'n': 'name'}
   });
 
+  let type = 'simple';
   if(args.electron) {
     type = 'electron';
   }
@@ -51,8 +51,8 @@ function createNewChallenge(userArgs, basePath) {
   }
 
   basePath = path.dirname(fs.realpathSync(basePath));
-  let templatePath = [basePath, 'templates', type, ''].join(path.sep);
-  let targetPath = [basePath, '..', 'challenges', args.name, ''].join(path.sep);
+  const templatePath = [basePath, 'templates', type, ''].join(path.sep);
+  const targetPath = [basePath, '..', 'challenges', args.name, ''].join(path.sep);
 
   fs.readdir(templatePath, (err, files) => {
     if(err) {
@@ -60,7 +60,7 @@ function createNewChallenge(userArgs, basePath) {
     }
 
     for(let i = 0; i < files.length; i++) {
-      let filename = files[i];
+      const filename = files[i];
       copyAndReplace(templatePath + filename, targetPath + filename, args.name)
         .then(() => console.log(`File ${filename} created.`));
     }
