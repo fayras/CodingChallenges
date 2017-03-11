@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 
+require('pretty-error').start();
 const create = require('./methods/new-challenge.js');
 const run = require('./methods/run-challenge.js');
 const help = require('./methods/help-challenge.js');

@@ -47,8 +47,7 @@ function createNewChallenge(userArgs, basePath) {
   }
 
   if(!args.name) {
-    console.error('Parameter "name" is required. Specified with --name="NAME_OF_CHALLENGE".');
-    process.exit(1);
+    throw new Error('Parameter "name" is required. Specified with --name="NAME_OF_CHALLENGE".');
   }
 
   basePath = path.dirname(fs.realpathSync(basePath));
@@ -57,8 +56,7 @@ function createNewChallenge(userArgs, basePath) {
 
   fs.readdir(templatePath, (err, files) => {
     if(err) {
-      console.error( "Could not list the directory.", err );
-      process.exit(1);
+      throw new Error(`Could not list the directory. ${err}`);
     }
 
     for(let i = 0; i < files.length; i++) {
