@@ -34,7 +34,7 @@ function copyAndReplace(from, to, replacement) {
 
 function createNewChallenge(args, basePath) {
   let name = null;
-  let isElectron = false;
+  let type = 'simple';
   for(let i = 0; i < args.length; i++) {
     if(args[i].includes('--name=')) {
       name = args[i].replace('--name=', '');
@@ -43,7 +43,10 @@ function createNewChallenge(args, basePath) {
       }
     }
     if(args[i] == '--electron') {
-      isElectron = true;
+      type = 'electron';
+    }
+    if(args[i] == '--p5') {
+      type = 'p5';
     }
   }
 
@@ -53,13 +56,7 @@ function createNewChallenge(args, basePath) {
   }
 
   basePath = path.dirname(fs.realpathSync(basePath));
-  let templatePath = [
-    basePath,
-    'templates',
-    isElectron ? 'electron' : 'simple',
-    ''
-  ].join(path.sep);
-
+  let templatePath = [basePath, 'templates', type, ''].join(path.sep);
   let targetPath = [basePath, '..', 'challenges', name, ''].join(path.sep);
 
   fs.readdir(templatePath, (err, files) => {

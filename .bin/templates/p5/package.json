@@ -1,0 +1,14 @@
+{
+  "name": "{{ title }}",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^1.4.15",
+    "p5": "^0.5.6"
+  }
+}
