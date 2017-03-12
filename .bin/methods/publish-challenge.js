@@ -22,13 +22,13 @@ const questions = [
   }
 ];
 
-let payload = `'{
+let payload = `'payload={
   "attachments": [{
     "pretext": "Neue Programmieraufgabe verfügbar! <!channel>",
     "title": "{{ challenge_name }}",
     "title_link": "https://github.com/fayras/CodingChallenges/tree/master/challenges/{{ challenge_link }}",
     "text": "{{ challenge_desc }}",
-    "footer": "Abgabedatum: {{ submission_date }}"
+    "footer": "Abgabedatum: {{ submission_date }}",
     "color": "#3AA3E3"
   }]
 }'`;
@@ -46,11 +46,11 @@ function publishChallenge(basePath) {
         .filter(item => item.includes(answers.challenge_name))[0];
 
         console.log(encodeURI(challengeName));
-      payload = payload.replace(/[\s\n]/g, '')
-        .replace(/{{challenge_link}}/g, escapeQuote(challengeName))
-        .replace(/{{challenge_name}}/g, escapeQuote(challengeName))
-        .replace(/{{challenge_desc}}/g, escapeQuote(answers.challenge_desc))
-        .replace(/{{submission_date}}/g, answers.submission_date);
+      payload = payload.replace(/[\n]/g, '')
+        .replace(/{{ challenge_link }}/g, escapeQuote(challengeName))
+        .replace(/{{ challenge_name }}/g, escapeQuote(challengeName))
+        .replace(/{{ challenge_desc }}/g, escapeQuote(answers.challenge_desc))
+        .replace(/{{ submission_date }}/g, answers.submission_date);
 
       const curl = spawn('curl', ['-X', 'POST', '--data-urlencode', payload, slack.path], {
       //const curl = spawn('echo', [payload], {
