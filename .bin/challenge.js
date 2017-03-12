@@ -3,6 +3,7 @@
 require('pretty-error').start().skipNodeFiles().skipPath('bootstrap_node.js');
 const create = require('./methods/new-challenge.js');
 const run = require('./methods/run-challenge.js');
+const publish = require('./methods/publish-challenge.js');
 const help = require('./methods/help-challenge.js');
 
 let userArgs = process.argv.slice(2);
@@ -15,6 +16,9 @@ switch(command) {
   case 'run':
   case 'start':
     run(userArgs[1], process.argv[1]);
+    break;
+  case 'publish':
+    publish(process.argv[1]);
     break;
   case 'help':
     help();
