@@ -56,13 +56,12 @@ function createNewChallenge(userArgs, basePath) {
 
   fs.readdir(templatePath, (err, files) => {
     if(err) {
-      throw new Error(`Could not list the directory. ${err}`);
+      throw new Error(err.message);
     }
 
-    for(let i = 0; i < files.length; i++) {
-      const filename = files[i];
-      copyAndReplace(templatePath + filename, targetPath + filename, args.name)
-        .then(() => console.log(`File ${filename} created.`));
+    for(const file of files) {
+      copyAndReplace(templatePath + file, targetPath + file, args.name)
+        .then(() => console.info(`File ${file} created.`));
     }
   });
 }

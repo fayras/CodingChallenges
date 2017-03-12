@@ -20,7 +20,7 @@ switch(command) {
     help();
     break;
   default:
-    console.log(`
+    console.info(`
     \x1b[1m\x1b[41mError\x1b[0m: \x1b[1mUnknown command.\x1b[0m
     `);
     help();

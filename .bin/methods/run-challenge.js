@@ -9,7 +9,7 @@ function runChallenge(challenge, basePath) {
   const package = require(`${path}/package.json`);
 
   if(!fs.existsSync(`${path}/node_modules`) && package.dependencies) {
-    console.log('Node modules not found. Installing missing dependencies...');
+    console.info('Node modules not found. Installing missing dependencies...');
     spawnSync('npm', ['install'], {
       cwd: path,
       shell: true,
@@ -17,7 +17,7 @@ function runChallenge(challenge, basePath) {
     });
   }
 
-  console.log('Starting...');
+  console.info('Starting...');
   const npm = spawn('npm', ['run', 'start'], {
     cwd: path,
     shell: true,
