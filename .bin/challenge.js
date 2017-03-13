@@ -29,3 +29,5 @@ switch(command) {
     `);
     help();
 }
+
+// Test
