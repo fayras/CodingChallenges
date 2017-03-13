@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 const inquirer = require('inquirer');
-const slack = require(__dirname + '/../../.slack.json');
 
 const questions = [
   {
@@ -38,6 +37,11 @@ function escapeQuote(str) {
 }
 
 function publishChallenge(basePath) {
+  if(!fs.existsSync(__dirname + '/../../.slack.json')) {
+    throw new Error('Slack config file not found.');
+  }
+
+  const slack = require(__dirname + '/../../.slack.json');
   inquirer.prompt(questions)
     .then(function (answers) {
       basePath = path.dirname(fs.realpathSync(basePath));
@@ -45,20 +49,21 @@ function publishChallenge(basePath) {
       const challengeName = fs.readdirSync(`${basePath}/../challenges`)
         .filter(item => item.includes(answers.challenge_name))[0];
 
-        console.log(encodeURI(challengeName));
+      if(!challengeName) {
+        throw new Error('Could not find challenge.');
+      }
+
       payload = payload.replace(/[\n]/g, '')
         .replace(/{{ challenge_link }}/g, escapeQuote(challengeName))
         .replace(/{{ challenge_name }}/g, escapeQuote(challengeName))
         .replace(/{{ challenge_desc }}/g, escapeQuote(answers.challenge_desc))
         .replace(/{{ submission_date }}/g, answers.submission_date);
 
-      const curl = spawn('curl', ['-X', 'POST', '--data-urlencode', payload, slack.path], {
-      //const curl = spawn('echo', [payload], {
+      spawn('curl', ['-X', 'POST', '--data-urlencode', payload, slack.path], {
         cwd: path,
         shell: true,
         stdio: 'inherit'
       });
-
     });
 }
 
