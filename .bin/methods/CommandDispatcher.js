@@ -8,11 +8,6 @@ class CommandDispatcher {
   constructor(args) {
     let commandName = capitalize(args[0]);
 
-    // TODO: Hack für Aliasse irgendwie besser umsetzen!
-    if(commandName === 'Start') {
-      commandName = 'Run';
-    }
-
     let commandPath = `${__dirname}/${commandName}Command.js`;
     if(!fs.existsSync(commandPath)) {
       commandPath = `${__dirname}/UnknownCommand.js`;
