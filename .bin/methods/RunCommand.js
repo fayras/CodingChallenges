@@ -8,6 +8,11 @@ class RunCommand extends Command {
   }
 
   run() {
+    this.installDependencies();
+    this.startChallenge();
+  }
+
+  installDependencies() {
     const path = Command.getPath(this.args._[0]);
     const packagejson = require(`${path}/package.json`);
 
@@ -19,9 +24,12 @@ class RunCommand extends Command {
         stdio: 'inherit'
       });
     }
+  }
 
+  startChallenge() {
+    const path = Command.getPath(this.args._[0]);
     console.info('Starting...');
-    const npm = spawn('npm', ['run', 'start'], {
+    spawn('npm', ['run', 'start'], {
       cwd: path,
       shell: true,
       stdio: 'inherit'
