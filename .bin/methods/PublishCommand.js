@@ -10,14 +10,18 @@ function escapeQuote(str) {
 class PublishCommand extends Command {
   constructor(args) {
     super(args);
+  }
 
-    this.questions = [
+  static get questions() {
+    return [
       { type: 'input', name: 'challenge_name', message: 'Which challenge to publish' },
       { type: 'input', name: 'challenge_desc', message: 'Short description for the challenge' },
       { type: 'input', name: 'submission_date', message: 'When is the submission date' }
     ];
+  }
 
-    this.payloadTemplate = `'payload={
+  static get payloadTemplate() {
+    return `'payload={
       "attachments": [{
         "pretext": "Neue Programmieraufgabe verfügbar! <!channel>",
         "title": "{{ challenge_name }}",
@@ -26,7 +30,7 @@ class PublishCommand extends Command {
         "footer": "Abgabedatum: {{ submission_date }}",
         "color": "#3AA3E3"
       }]
-    }'`;
+    }'`.replace(/[\n]/g, '');
   }
 
   run() {
@@ -35,7 +39,7 @@ class PublishCommand extends Command {
     }
 
     const slack = require(__dirname + '/../../.slack.json');
-    inquirer.prompt(this.questions)
+    inquirer.prompt(PublishCommand.questions)
       .then(answers => {
         const challengeName = fs.readdirSync(`${Command.basePath}/../challenges`)
           .filter(item => item.includes(answers.challenge_name))[0];
@@ -44,7 +48,7 @@ class PublishCommand extends Command {
           throw new Error('Could not find challenge.');
         }
 
-        let payload = this.payloadTemplate.replace(/[\n]/g, '')
+        let payload = PublishCommand.payloadTemplate
           .replace(/{{ challenge_link }}/g, escapeQuote(challengeName))
           .replace(/{{ challenge_name }}/g, escapeQuote(challengeName))
           .replace(/{{ challenge_desc }}/g, escapeQuote(answers.challenge_desc))
