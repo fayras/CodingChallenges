@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const { spawn } = require('child_process');
 const inquirer = require('inquirer');
 const Command = require('./Command.js');
@@ -10,6 +11,13 @@ function escapeQuote(str) {
 class PublishCommand extends Command {
   constructor(args) {
     super(args);
+
+    const slackPath = [__dirname , '..', '..', '.slack.json'].join(path.sep);
+    if(!fs.existsSync(slackPath)) {
+      throw new Error('Slack config file not found.');
+    }
+
+    this.slackConfig = require(slackPath);
   }
 
   static get questions() {
@@ -34,11 +42,6 @@ class PublishCommand extends Command {
   }
 
   run() {
-    if(!fs.existsSync(__dirname + '/../../.slack.json')) {
-      throw new Error('Slack config file not found.');
-    }
-
-    const slack = require(__dirname + '/../../.slack.json');
     inquirer.prompt(PublishCommand.questions)
       .then(answers => {
         const challengeName = fs.readdirSync(`${Command.basePath}/../challenges`)
@@ -54,11 +57,15 @@ class PublishCommand extends Command {
           .replace(/{{ challenge_desc }}/g, escapeQuote(answers.challenge_desc))
           .replace(/{{ submission_date }}/g, answers.submission_date);
 
-        spawn('curl', ['-X', 'POST', '--data-urlencode', payload, slack.path], {
-          shell: true,
-          stdio: 'inherit'
-        });
+        PublishCommand.postToSlack(payload, this.slackConfig.path);
       });
+  }
+
+  static postToSlack(payload, url) {
+    spawn('curl', ['-X', 'POST', '--data-urlencode', payload, url], {
+      shell: true,
+      stdio: 'inherit'
+    });
   }
 }
 
