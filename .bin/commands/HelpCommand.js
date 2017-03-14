@@ -1,7 +1,8 @@
-#! /usr/bin/env node
+const Command = require('./Command.js');
 
-function helpChallenge() {
-  console.info(`
+class HelpCommand extends Command {
+  run() {
+    console.info(`
     Usage
       $ challenge <command> [options]
 
@@ -20,7 +21,8 @@ function helpChallenge() {
     Examples
       $ challenge new -n "Neue Aufgabe" --electron
       $ challenge start "challenges/Neue Aufgabe"
-`);
+    `);
+  }
 }
 
-module.exports = helpChallenge
+module.exports = HelpCommand
