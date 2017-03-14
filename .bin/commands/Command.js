@@ -16,11 +16,7 @@ class Command {
       return process.cwd();
     }
 
-    return fs.realpathSync(`${Command.basePath}/../${challenge}`);
-  }
-
-  parseArgs() {
-    return minimist(this.args, this.options);
+    return path.resolve([Command.basePath, '..', challenge].join(path.sep));
   }
 
   run() {

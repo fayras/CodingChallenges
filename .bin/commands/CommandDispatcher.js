@@ -6,7 +6,7 @@ function capitalize(string) {
 
 class CommandDispatcher {
   constructor(args) {
-    let commandName = capitalize(args[0]);
+    const commandName = capitalize(args[0]);
 
     let commandPath = `${__dirname}/${commandName}Command.js`;
     if(!fs.existsSync(commandPath)) {

@@ -33,37 +33,24 @@ class NewCommand extends Command {
       }
 
       for(const file of files) {
-        NewCommand.copyAndReplace(templatePath + file, targetPath + file, this.args.name)
-          .then(() => console.info(`File ${file} created.`));
+        NewCommand.copyAndReplace(templatePath + file, targetPath + file, this.args.name);
+        console.info(`File ${file} created.`);
       }
     });
   }
 
   static copyAndReplace(from, to, replacement) {
-    return new Promise((resolve, reject) => {
-      try {
-        fs.readFile(from, 'utf8', (err,data) => {
-          if (err) reject(err);
+    let data = fs.readFileSync(from).toString();
 
-          let result;
-          if(from.includes('package.json')) {
-            result = data.replace(/{{ title }}/g, slug(replacement).toLowerCase());
-          } else {
-            result = data.replace(/{{ title }}/g, replacement);
-          }
+    let result;
+    if (from.includes('package.json')) {
+      result = data.replace(/{{ title }}/g, slug(replacement).toLowerCase());
+    } else {
+      result = data.replace(/{{ title }}/g, replacement);
+    }
 
-          mkdirp(path.dirname(to), function (err) {
-              if (err) console.error(err);
-              fs.writeFile(to, result, 'utf8', (err, buffer) => {
-                 if (err) reject(err);
-                 else resolve(buffer);
-              });
-          });
-        });
-      } catch(err) {
-        reject(err);
-      }
-    });
+    mkdirp.sync(path.dirname(to));
+    fs.writeFileSync(to, result);
   }
 }
 
