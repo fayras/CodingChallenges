@@ -35,3 +35,4 @@ function readRows(input) {
 
 var input = fs.createReadStream('inputs.txt');
 readRows(input);
+
