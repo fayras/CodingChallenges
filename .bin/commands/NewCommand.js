@@ -42,15 +42,14 @@ class NewCommand extends Command {
   static copyAndReplace(from, to, replacement) {
     let data = fs.readFileSync(from).toString();
 
-    let result;
     if (from.includes('package.json')) {
-      result = data.replace(/{{ title }}/g, slug(replacement).toLowerCase());
+      data = data.replace(/{{ title }}/g, slug(replacement).toLowerCase());
     } else {
-      result = data.replace(/{{ title }}/g, replacement);
+      data = data.replace(/{{ title }}/g, replacement);
     }
 
     mkdirp.sync(path.dirname(to));
-    fs.writeFileSync(to, result);
+    fs.writeFileSync(to, data);
   }
 }
 
