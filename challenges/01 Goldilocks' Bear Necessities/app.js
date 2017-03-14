@@ -40,7 +40,7 @@ class GoldilocksHelper {
         this.chairs = []
         for (let i = 1; i < lines.length; i++) { //iterate through all lines from index = 1
             lineArray = lines[i].split(' ') //split left and right values
-            this.chairs.splice(i, 0, { weight: parseInt(lineArray[0]), temperature: parseInt(lineArray[1]) }) //parse int from string values and then push them as object to array
+            this.chairs.push({ weight: parseInt(lineArray[0]), temperature: parseInt(lineArray[1]) }) //parse int from string values and then push them as object to array
         }
     }
 
