@@ -1,5 +1,9 @@
 class GoldilocksHelper {
 
+    /**
+     * Constuctor
+     * @param  string file Filepath
+     */
     constructor(file) {
         this.readFile(file, (err, content) => {
             if (err)
