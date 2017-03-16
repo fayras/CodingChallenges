@@ -1,6 +1,6 @@
 const fs = require('fs');
-const { spawn, spawnSync } = require('child_process');
 const Command = require('./Command.js');
+const SpawnCommand = require('./SpawnCommand.js');
 
 class RunCommand extends Command {
   constructor(args) {
@@ -18,22 +18,19 @@ class RunCommand extends Command {
 
     if(!fs.existsSync(`${path}/node_modules`) && packagejson.dependencies) {
       console.info('Node modules not found. Installing missing dependencies...');
-      spawnSync('npm', ['install'], {
+      new SpawnCommand(['npm', 'install'], {
         cwd: path,
-        shell: true,
-        stdio: 'inherit'
-      });
+        sync: true
+      }).run();
     }
   }
 
   startChallenge() {
     const path = Command.getPath(this.args._[0]);
     console.info('Starting...');
-    spawn('npm', ['run', 'start'], {
-      cwd: path,
-      shell: true,
-      stdio: 'inherit'
-    });
+    new SpawnCommand(['npm', 'run', 'start'], {
+      cwd: path
+    }).run();
   }
 }
 

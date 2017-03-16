@@ -3,6 +3,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 const inquirer = require('inquirer');
 const Command = require('./Command.js');
+const SpawnCommand = require('./SpawnCommand.js');
 
 function escapeQuote(str) {
     return (str + '').replace("'", "'\"'\"'");
@@ -62,10 +63,7 @@ class PublishCommand extends Command {
   }
 
   static postToSlack(payload, url) {
-    spawn('curl', ['-X', 'POST', '--data-urlencode', payload, url], {
-      shell: true,
-      stdio: 'inherit'
-    });
+    new SpawnCommand(['curl', '-X', 'POST', '--data-urlencode', payload, url]).run();
   }
 }
 
