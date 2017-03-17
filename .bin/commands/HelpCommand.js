@@ -7,10 +7,11 @@ class HelpCommand extends Command {
       $ challenge <command> [options]
 
     Command
-      new    Erstellt eine neue Aufgabe
-      start  Startet eine Aufgabe
-      run    Alias für start
-      help   Zeigt Hilfe an
+      new      Erstellt eine neue Aufgabe
+      start    Startet eine Aufgabe
+      run      Alias für start
+      publish  Postet eine Nachricht an Slack via curl
+      help     Zeigt Hilfe an
 
     Options
       -n, --name  Der Name der Aufgabe, wenn eine erstellt wird
