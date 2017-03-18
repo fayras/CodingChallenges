@@ -4,6 +4,10 @@ const minimist = require('minimist');
 
 class Command {
   constructor(args, options = null) {
+    if(typeof args === 'string') {
+      args = args.split(' ');
+    }
+
     this.args = minimist(args, options);
   }
 
