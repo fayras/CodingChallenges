@@ -18,7 +18,7 @@ class RunCommand extends Command {
 
     if(!fs.existsSync(`${path}/node_modules`) && packagejson.dependencies) {
       console.info('Node modules not found. Installing missing dependencies...');
-      new SpawnCommand(['npm', 'install'], {
+      new SpawnCommand('npm install', {
         cwd: path,
         sync: true
       }).run();
@@ -28,7 +28,7 @@ class RunCommand extends Command {
   startChallenge() {
     const path = Command.getPath(this.args._[0]);
     console.info('Starting...');
-    new SpawnCommand(['npm', 'run', 'start'], {
+    new SpawnCommand('npm run start', {
       cwd: path
     }).run();
   }
