@@ -13,7 +13,7 @@ class SpawnCommand extends Command {
     }
   }
 
-  run() {
+  async run() {
     let sp = this.options.sync ? spawnSync : spawn;
 
     sp(this.args._[0], this.args._.splice(1), {

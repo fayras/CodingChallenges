@@ -23,7 +23,7 @@ class Command {
     return path.resolve([Command.basePath, '..', challenge].join(path.sep));
   }
 
-  run() {
+  async run() {
     throw new Error('Command is an abstract class. You have to override the run method.');
   }
 }

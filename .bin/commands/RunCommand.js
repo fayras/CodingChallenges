@@ -7,7 +7,7 @@ class RunCommand extends Command {
     super(args);
   }
 
-  run() {
+  async run() {
     this.installDependencies();
     this.startChallenge();
   }

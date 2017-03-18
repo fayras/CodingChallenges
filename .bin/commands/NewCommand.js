@@ -11,7 +11,7 @@ class NewCommand extends Command {
     });
   }
 
-  run() {
+  async run() {
     if(!this.args.name) {
       throw new Error('Parameter "name" is required. Specified with --name="NAME_OF_CHALLENGE".');
     }
