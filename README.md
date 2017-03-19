@@ -6,7 +6,8 @@ Alle Aufgaben werden in der Node.js Umgebung gebaut, Informationen zu einzelnen 
 
 ## Abgabefristen
 
-Aufgabe 01 - Abgabe bis: 19. März 2017 23:59
+Aufgabe 02 - Abgabe bis: 26. März 2017 23:59
+~~Aufgabe 01 - Abgabe bis: 19. März 2017 23:59~~
 
 ## Erste Schritte
 
