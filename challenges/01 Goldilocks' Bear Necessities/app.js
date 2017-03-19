@@ -25,15 +25,15 @@ let chairs = [];
 for (var i = 0; i < tokens.length / 2; i++) {
   // Berechne den Index des 1D-Arrays der Tokens. Dabei
   // ist i * 2 die Nummer der Zeile der Eingaben.
-	const weightIndex = i * 2;
-	const tempIndex = i * 2 + 1;
+  const weightIndex = i * 2;
+  const tempIndex = i * 2 + 1;
 
-	if(isLess(maxWeight, tokens[weightIndex])
-    && isLess(tokens[tempIndex], maxTemp)) {
+  if(isLess(maxWeight, tokens[weightIndex])
+  && isLess(tokens[tempIndex], maxTemp)) {
     // i + 1, um den Output für Menschen lesbarer
     // zu machen. Den "0ten Stuhl" gibt es nicht.
     chairs.push(i + 1);
-	}
+  }
 }
 
 console.log(chairs.join(' '));
@@ -50,8 +50,8 @@ function isLess(valueA, valueB) {
   // Wurde ein String übergeben, so wandle diesen in eine
   // Zahl um. Da immer nur kg mit kg und °C mit °C ver-
   // glichen wird, wird immer beides abgeschnitten.
-	let a = +valueA.replace('kg', '').replace('°C', '');
-	let b = +valueB.replace('kg', '').replace('°C', '');
+  let a = +valueA.replace('kg', '').replace('°C', '');
+  let b = +valueB.replace('kg', '').replace('°C', '');
 
-	return a < b;
+  return a < b;
 }
