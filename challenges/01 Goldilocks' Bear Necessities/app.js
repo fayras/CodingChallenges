@@ -1,77 +1,96 @@
-class GoldilocksHelper {
-
-    /**
-     * Constuctor
-     * @param  string file Filepath
-     */
-    constructor(file) {
-        this.readFile(file, (err, content) => {
-            if (err)
-                throw err
-            else {
-                this.parseValues(content)
-                this.calculateSuitableChairs()
-                this.output()
-            }
-        })
-    }
-
-    /**
-     * Read File as string
-     * @param  string file Filepath
-     * @param  callback (err,content) Callback
-, after fileread completed
-     */
-    readFile(file, callback) {
-        let fs = require('fs') //require fs library
-        fs.readFile(file, 'utf8', callback) //read file with nodejs
-    }
-
-    /**
-     * Parse values from content string
-     * @param  string content Content string returned from fs.readFile
-     *
-     */
-    parseValues(content) {
-        let lines = content.split('\n') //split content string to array line by line
-        this.weight = parseInt(lines[0].split(' ')[0]) //get weight of Goldilocks from first line left value
-        this.maxTemperature = parseInt(lines[0].split(' ')[1]) //get maximum temperature that Goldilocks can tolerate from first line right value
-        let lineArray
-        this.chairs = []
-        for (let i = 1; i < lines.length; i++) { //iterate through all lines from index = 1
-            lineArray = lines[i].split(' ') //split left and right values
-            this.chairs.push({ weight: parseInt(lineArray[0]), temperature: parseInt(lineArray[1]) }) //parse int from string values and then push them as object to array
-        }
-    }
-
-    /**
-     * Calculates suitable chairs from all value pairs in this.chairs
-     */
-    calculateSuitableChairs() {
-        this.suitableChairs = []
-        this.chairs.forEach((chair, index) => {
-            if (chair.weight >= this.weight && chair.temperature <= this.maxTemperature) // if chair maximum weight is greater than Goldilocks and temperature less than Goldilocks
-                this.suitableChairs.push(index + 1) //add this chair index to suitable chairs array with index +1, because there are no Goldilocks parameters as first arrayelement
-        });
-    }
-
-    /**
-     * Output in console
-     */
-    output() {
-        this.suitableChairs
-            .forEach((chairIndex) => {
-                console.log('Suitable chair',
-                    chairIndex,
-                    'with maximum weight',
-                    this.chairs[chairIndex - 1].weight,
-                    'kg and temperature', this.chairs[chairIndex - 1].temperature,
-                    '°C'
-                )
-            });
-    }
+ let fs = require('fs') //require fs library
 
 
-}
+ /**
+  * Gets suitable chairs array from file with weight and temperature pairs
+  * @param  string file Filepath
+  */
+ function getSuitableChairs(file) {
+     let content = fs.readFileSync(file, 'utf8')
+     if (content) {
+         let lines = content.split('\n') //split content by each new line
+         let goldislocksProps = getGoldilocksWeightAndTemperature(lines)
+         let chairs = getChairsWeightAndTemperature(lines)
+         let suitableChairs = findSuitableChairsForGoldilocks(goldislocksProps, chairs)
+         return suitableChairs
+     } else
+         return null
+ }
 
-let helper = new GoldilocksHelper("inputs.txt")
+ /**
+  * Parse Goldilocks and chair's weight and temperature from each line and save it in in properties this.weight and this.maxTemperature or in an array this.chairs
+  * @param  array lines Lines array from file
+  * @return {object Object with Goldilock's weight and temperature
+  */
+ function getGoldilocksWeightAndTemperature(lines) {
+     let weight = parseInt(lines[0].split(' ')[0]) //get weight of Goldilocks from first line
+     let maxTemperature = parseInt(lines[0].split(' ')[1]) //get maximum temperature that Goldilocks can tolerate from first line
+     return { weight: weight, temperature: maxTemperature }
+ }
+
+ /**
+  * Parse Goldilocks and chair's weight and temperature from content string and save it in in properties this.weight and this.maxTemperature or in an array this.chairs
+  * @param  string content Content string returned from fs.readFile
+  * @return array chairs Chairs array with weight and temperature
+  */
+ function getChairsWeightAndTemperature(lines) {
+     let chairs = []
+     for (let i = 1; i < lines.length; i++) { //iterate through all lines from index = 1, because index = 0 ist Goldilock's weight and temperature
+         let lineArray = lines[i].split(' ') //split weight and temperature values
+         chairs.push({ weight: parseInt(lineArray[0]), temperature: parseInt(lineArray[1]) }) //get integers from string values, that contains kg and °C and add them to array as object
+     }
+     return chairs
+ }
+
+ /**
+  * Finds suitable chairs from all value pairs in this.chairs
+  * @param object goldislocksProps Object with weight and temperature
+  * @param chairs array Array with all chairs from file
+  * @return array suitable chairs for Goldilocks
+  */
+ function findSuitableChairsForGoldilocks(goldislocksProps, chairs) {
+     let suitableChairs = []
+     chairs.forEach((chair, index) => {
+         if (chair.weight >= goldislocksProps.weight && chair.temperature <= goldislocksProps.temperature)
+             suitableChairs.push({ index: index + 1, weight: chair.weight, temperature: chair.temperature }) //add this chair index to suitable chairs array with index +1, because there are no Goldilocks parameters as first arrayelement
+     })
+     return suitableChairs
+ }
+
+ /**
+  * Output in console of suitable chairs for Goldilocks with its properties 
+  * @param array suitableChairs Array with suitable chairs
+  */
+ function descriptiveOutput(suitableChairs) {
+     suitableChairs
+         .forEach((chair) => {
+             console.log('Suitable chair',
+                 chair.index,
+                 'with maximum weight',
+                 chair.weight,
+                 'kg and temperature', chair.temperature,
+                 '°C'
+             )
+         });
+ }
+
+ /**
+  * Simple output of chairs indexes in console
+  * @param  array suitableChairs Array with suitable chairs
+  */
+ function simpleOutput(suitableChairs) {
+     let output = "Goldilocks suitable chairs: "
+
+     suitableChairs
+         .forEach((chair) => {
+             output += " " + chair.index
+         });
+     console.log(output + "\n")
+ }
+
+ let suitableChairs = getSuitableChairs('inputs.txt')
+ if (suitableChairs && suitableChairs.length > 0) {
+     simpleOutput(suitableChairs)
+     descriptiveOutput(suitableChairs)
+ } else
+     console.log('Could not get any suitable chairs, because of error')
