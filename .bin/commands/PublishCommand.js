@@ -11,7 +11,11 @@ function escapeQuote(str) {
 
 class PublishCommand extends Command {
   constructor(args) {
-    super(args);
+    super(args, {
+      default: {
+        'solution': false
+      }
+    });
 
     const slackPath = [__dirname , '..', '..', '.slack.json'].join(path.sep);
     if(!fs.existsSync(slackPath)) {
@@ -29,17 +33,29 @@ class PublishCommand extends Command {
     ];
   }
 
-  static get payloadTemplate() {
-    return `'payload={
-      "attachments": [{
-        "pretext": "Neue Programmieraufgabe verfügbar! <!channel>",
-        "title": "{{ challenge_name }}",
-        "title_link": "https://github.com/fayras/CodingChallenges/tree/master/challenges/{{ challenge_link }}",
-        "text": "{{ challenge_desc }}",
-        "footer": "Abgabedatum: {{ submission_date }}",
-        "color": "#3AA3E3"
-      }]
-    }'`.replace(/[\n]/g, '');
+  static get payloadTemplates() {
+    return {
+      master: `'payload={
+          "attachments": [{
+            "pretext": "Neue Programmieraufgabe verfügbar! <!channel>",
+            "title": "{{ challenge_name }}",
+            "title_link": "https://github.com/fayras/CodingChallenges/tree/master/challenges/{{ challenge_link }}",
+            "text": "{{ challenge_desc }}",
+            "footer": "Abgabedatum: {{ submission_date }}",
+            "color": "#7CD197"
+          }]
+        }'`.replace(/[\n]/g, ''),
+
+      solutions: `'payload={
+          "attachments": [{
+            "pretext": "Neue Lösung verfügbar! <!channel>",
+            "title": "{{ challenge_name }}",
+            "title_link": "https://github.com/fayras/CodingChallenges/tree/solutions/challenges/{{ challenge_link }}",
+            "text": "{{ challenge_desc }}",
+            "color": "#3AA3E3"
+          }]
+        }'`.replace(/[\n]/g, '')
+    };
   }
 
   run() {
@@ -52,7 +68,9 @@ class PublishCommand extends Command {
           throw new Error('Could not find challenge.');
         }
 
-        let payload = PublishCommand.payloadTemplate
+        let payload = this.args.solution
+          ? PublishCommand.payloadTemplates.solutions
+          : PublishCommand.payloadTemplates.master
           .replace(/{{ challenge_link }}/g, escapeQuote(challengeName))
           .replace(/{{ challenge_name }}/g, escapeQuote(challengeName))
           .replace(/{{ challenge_desc }}/g, escapeQuote(answers.challenge_desc))
