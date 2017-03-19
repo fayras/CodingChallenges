@@ -42,23 +42,24 @@ class PublishCommand extends Command {
     }'`.replace(/[\n]/g, '');
   }
 
-  async run() {
-    let answers = await inquirer.prompt(PublishCommand.questions);
+  run() {
+    inquirer.prompt(PublishCommand.questions)
+      .then(answers => {
+        const challengeName = fs.readdirSync(`${Command.basePath}/../challenges`)
+          .filter(item => item.includes(answers.challenge_name))[0];
 
-    const challengeName = fs.readdirSync(`${Command.basePath}/../challenges`)
-      .filter(item => item.includes(answers.challenge_name))[0];
+        if(!challengeName) {
+          throw new Error('Could not find challenge.');
+        }
 
-    if(!challengeName) {
-      throw new Error('Could not find challenge.');
-    }
+        let payload = PublishCommand.payloadTemplate
+          .replace(/{{ challenge_link }}/g, escapeQuote(challengeName))
+          .replace(/{{ challenge_name }}/g, escapeQuote(challengeName))
+          .replace(/{{ challenge_desc }}/g, escapeQuote(answers.challenge_desc))
+          .replace(/{{ submission_date }}/g, answers.submission_date);
 
-    let payload = PublishCommand.payloadTemplate
-      .replace(/{{ challenge_link }}/g, escapeQuote(challengeName))
-      .replace(/{{ challenge_name }}/g, escapeQuote(challengeName))
-      .replace(/{{ challenge_desc }}/g, escapeQuote(answers.challenge_desc))
-      .replace(/{{ submission_date }}/g, answers.submission_date);
-
-    PublishCommand.postToSlack(payload, this.slackConfig.path);
+        PublishCommand.postToSlack(payload, this.slackConfig.path);
+      });
   }
 
   static postToSlack(payload, url) {
