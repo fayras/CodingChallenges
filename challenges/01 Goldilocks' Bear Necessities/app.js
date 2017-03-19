@@ -10,7 +10,7 @@ const inputs = fs.readFileSync('inputs.txt').toString();
 const tokens = inputs.split(/[\s\n]/);
 
 // In der Aufgabenstellung war festgelegt, dass
-// die erste Zahl das maximal Gewich, und die
+// die erste Zahl das minimale Gewich, und die
 // zweite die maximale Temperatur ist. Danach
 // werden diese nicht mehr gebraucht: ent-
 // ferne diese folglich aus dem Array.
