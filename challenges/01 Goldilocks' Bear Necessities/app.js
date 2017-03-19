@@ -7,7 +7,7 @@ const inputs = fs.readFileSync('inputs.txt').toString();
 
 // Splitte die Eingaben in einzelne Tokens. Ein
 // Token ist genau eine Zahl mit ggf. Einheit.
-const tokens = inputs.split(/[\s\n]/);
+const tokens = inputs.split(/[ \n]/);
 
 // In der Aufgabenstellung war festgelegt, dass
 // die erste Zahl das minimale Gewich, und die
