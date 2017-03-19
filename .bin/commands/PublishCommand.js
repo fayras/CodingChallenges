@@ -68,9 +68,9 @@ class PublishCommand extends Command {
           throw new Error('Could not find challenge.');
         }
 
-        let payload = this.args.solution
-          ? PublishCommand.payloadTemplates.solutions
-          : PublishCommand.payloadTemplates.master
+        let payload = this.args.solution ? PublishCommand.payloadTemplates.solutions : PublishCommand.payloadTemplates.master;
+
+        payload = payload
           .replace(/{{ challenge_link }}/g, escapeQuote(challengeName))
           .replace(/{{ challenge_name }}/g, escapeQuote(challengeName))
           .replace(/{{ challenge_desc }}/g, escapeQuote(answers.challenge_desc))
