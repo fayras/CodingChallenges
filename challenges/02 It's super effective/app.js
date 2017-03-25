@@ -5,6 +5,10 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
+const typeCharactaristics = {
+    normal: {rock: 0.5, ghost: 0, steel: 0.5}
+}
+
 rl.question('Lass den Kampf beginnen', (answer) => {
     let actors = splitAnswer(answer);
     let effectivityValue = effectivityCalculation(actors);
@@ -38,8 +42,20 @@ function splitAnswer(answer) {
 function effectivityCalculation(targets) {
     let attacker = targets[0];
     let targetTypes = targets[1].split(' ');
-    console.log(attacker + ', ' + targetTypes)
-    return 1.5;
+    
+    let typeValues = []
+    targetTypes.forEach(type => {
+        console.log(type)
+        if(typeCharactaristics[attacker][type]){
+            typeValues.push(typeCharactaristics[attacker][type])
+        }
+        else {
+            typeValues.push(1);
+        }
+        console.log(typeValues)
+    })
+    
+    return typeValues.reduce((a, b) => a * b);
 }
 
 /**
