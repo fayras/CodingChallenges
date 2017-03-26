@@ -54,7 +54,7 @@ function getPokemonTypeObject(types) {
         dragon: types[i++],
         dark: types[i++],
         steel: types[i++],
-        fairy: types[i++]
+        fairy: types[i]
     }
 }
 
