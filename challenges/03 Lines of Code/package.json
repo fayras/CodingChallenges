@@ -1,0 +1,14 @@
+{
+  "name": "03-line-antialiasing",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^1.6.3",
+    "p5": "^0.5.7"
+  }
+}

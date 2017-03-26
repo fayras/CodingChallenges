@@ -1,0 +1,13 @@
+{
+  "name": "its-super-effective",
+  "version": "1.0.0",
+  "main": "app.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node ."
+  },
+  "dependencies": {
+    "axios": "^0.15.3"
+  }
+}

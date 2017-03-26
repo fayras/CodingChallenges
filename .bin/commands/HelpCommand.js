@@ -1,7 +1,7 @@
 const Command = require('./Command.js');
 
 class HelpCommand extends Command {
-  async run() {
+  run() {
     console.info(`
     Usage
       $ challenge <command> [options]
