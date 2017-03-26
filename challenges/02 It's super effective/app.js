@@ -27,41 +27,37 @@ const typeCharactaristics = {
     steel: {fire: 0.5, water: 0.5, electric: 0.5, ice: 2, rock: 2, steel: 0.5, fairy: 2},
     fairy: {fire: 0.5, fighting: 0.5, poison: 0.5, ground: 2, dragon: 2, steel: 0.5}
 }
-/**Speichert alle Requests ab, damit später alle gleichzeitig geladen werden können */
-var promises = [undefined, undefined];
 
+/**Speichert alle Requests ab, die später nötig sind. */
+var requestsToDo = [undefined, undefined];
 
-rl.question('Lass den Kampf beginnen', (answer) => {
+/**
+ * Stellt eine Frage im Terminal und erwartet eine Antwort.
+ * Auf Basis der Antwort wird der Vergleich der Typen vorgenommen und
+ * wenn nötig, ein Api-Aufruf um Attacken-und Pokemon-Objekte abzurufen.
+ */
+rl.question('Lass den Vergleich beginnen: ', (answer) => {
     let actors = splitAnswer(answer);
     
-    if(!typeCharactaristics[actors[0]]){
-        promises[0] = getTypeFromAttack(actors[0])
-    }
-    if(!typeCharactaristics[actors[1][0]]) {
-        promises[1] = getTypeFromPokemon(actors[1])
-    }
-   
-        console.log(promises)
-        axios.all(promises)
-            .then((results) => {
-                if(results[0] != undefined) {
-                    actors[0] = results[0].data.type.name;
-                }
-                if(results[1] != undefined) {
-                    let pokemonTypes = [];
-                    results[1].data.types.forEach(type => {
-                        pokemonTypes.push(type.type.name)
-                    })
-                    actors[1] = pokemonTypes
-                }
-                console.log(actors)
-                
-                let effectivityValue = effectivityCalculation(actors);
-                console.log(giveAnswerFromEffectivityValue(effectivityValue));
-                rl.close();
-            })
+    checkComposition(actors);
+    axios.all(requestsToDo)
+        .then((results) => {
+            if(results[0] != undefined) {
+                actors[0] = results[0].data.type.name;
+            }
+            if(results[1] != undefined) {
+                let pokemonTypes = [];
+                results[1].data.types.forEach(type => {
+                    pokemonTypes.push(type.type.name)
+                })
+                actors[1] = pokemonTypes
+            }
+            
+            let effectivityValue = effectivityCalculation(actors);
+            console.log('Der Effekt ist: ' + giveAnswerFromEffectivityValue(effectivityValue));
+            rl.close();
+        })
 })
-
 
 /**
  * Unterteilt den eingegebenen String in Angreifer und Verteidiger.
@@ -77,38 +73,20 @@ function splitAnswer(answer) {
 }
 
 /**
- * Überprüft, welche Art von Vergleich vorgenommen wird. Sollte anstatt eines Angreifer-Typs
- * eine Attacke eingegeben worden sein, wird der Typ der Attacke ermittelt und übergeben.
- * Sollte anstatt Verteidiger-Typ/Typen ein Pokemonname übergeben worden sein, wird dessen Typ-
- * komposition ermittelt und dann übergeben.
+ * Überprüft, welche Zusammensetzung aus Typen, Attacke und Pokemon übergeben wurde
+ * und fügt für eine Attacke oder ein Pokemon einen Api-Request in das requestsToDo-Array
+ * hinzu.
  * 
- * @summary Ermittlung von Angreifer- und Verteidiger-Typ. 
- * 
- * @param targets - Array, in dem der erste Eintrag der Angreifer ist
- *                  und der zweite Eintrag der oder die Verteidiger.
- *                  
- * @returns {Array|*} - Typen von Angreifer und Verteidiger
+ * @param actors {Array} - Beinhaltet Typen, Attacke und Pokemon.
  */
-function battleComposition (targets) {
-    let composition = [];
-    if(typeCharactaristics[targets[0]]){
-        composition[0] = targets[0]
+function checkComposition(actors) {
+    if(!typeCharactaristics[actors[0]]){
+        requestsToDo[0] = getTypeFromAttack(actors[0])
     }
-    else {
-        console.log('Kein Typ sondern Attacke');
-        composition[0] = getTypeFromAttack(targets[0])
+    if(!typeCharactaristics[actors[1][0]]) {
+        requestsToDo[1] = getTypeFromPokemon(actors[1])
     }
-    if(typeCharactaristics[targets[1][0]]) {
-        composition[1] = targets[1];
-    }
-    else {
-        console.log('Keine Typen sondern Pokemon')
-        composition[1] = getTypeFromPokemon(targets[1])
-    }
-    console.log(composition)
-    return composition
 }
-
 /**
  * Berechnet die Effektivität zwischen Angreifer-Typ und Verteidiger-Typ.
  * 
@@ -120,6 +98,8 @@ function battleComposition (targets) {
 function effectivityCalculation(targets) {
     let attacker = targets[0];
     let targetTypes = targets[1]
+    
+    console.log('Der Typ: "' + targets[0] + '" wird mit: "' + targets[1] + '" verglichen.')
     
     let typeValues = []
     targetTypes.forEach(type => {
@@ -157,20 +137,21 @@ function giveAnswerFromEffectivityValue(effectValue){
 }
 
 /**
- * Ermitteln des Types durch eingegebene Attacke.
+ * Liefert durch Eingabe des Attackennames das entsprechende Attacken-Objekt zurück.
  * 
  * @param attack {string} - Name der Attacke.
- * @returns {string} - Typ der Attacke.
+ * 
+ * @returns {Object} - Objekt zur Attacke.
  */
 function getTypeFromAttack(attack) {
     return axios.get('https://pokeapi.co/api/v2/move/' + attack)
 }
 
 /**
- * Ermitteln des Types durch eingegebenes Pokemon.
+ * Liefert durch Eingabe des Pokemonnames das entsprechende Pokemon-Objekt zurück.
  * 
  * @param pokemon {string} - Name des Pokemon.
- * @returns {Array} - Array der Typen des Pokemons
+ * @returns {Array} - Objekt des Pokemons
  */
 function getTypeFromPokemon(pokemon) {
     return axios.get('https://pokeapi.co/api/v2/pokemon/' + pokemon)
