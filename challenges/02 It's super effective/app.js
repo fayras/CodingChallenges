@@ -95,6 +95,8 @@ rl.question('Please put in attack and defend types like this: typeAttack -> type
             console.log('Normal (' + effectivness * 100 + '%)')
         } else if (effectivness >= 1.5) {
             console.log('Super-effective (' + effectivness * 100 + '%)')
+        } else {
+            console.log('No effect (0%)')
         }
     }
 
