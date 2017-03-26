@@ -29,5 +29,9 @@ Thumbs.db
 # Solutions
 solutions/
 
+# Docs
+docs/
+
 # Slack Integration
 .slack.json
+.bin/.slack.json
