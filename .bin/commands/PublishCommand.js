@@ -17,7 +17,7 @@ class PublishCommand extends Command {
       }
     });
 
-    const slackPath = [__dirname , '..', '..', '.slack.json'].join(path.sep);
+    const slackPath = [__dirname, '..', '.slack.json'].join(path.sep);
     if(!fs.existsSync(slackPath)) {
       throw new Error('Slack config file not found.');
     }

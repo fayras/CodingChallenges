@@ -1,6 +1,6 @@
 {
   "name": "coding-challenges",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Coding Challenges",
   "author": "Dimitri Tarnavski",
   "license": "ISC",
@@ -12,7 +12,9 @@
     "init": "npm link && npm install"
   },
   "dependencies": {
+    "docma": "^1.5.1",
     "inquirer": "^3.0.6",
+    "jsdoc-strip-async-await": "^0.1.0",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "pretty-error": "^2.0.2",
