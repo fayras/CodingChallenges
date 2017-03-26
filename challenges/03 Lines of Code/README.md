@@ -18,7 +18,8 @@ Um zu sehen, dass die Algorithmen wirklich schnell Linien zeichnen, sollen sich 
 
 - Die Doku für p5 findet ihr [hier](https://p5js.org/reference/).
 - Außer der Doku dürft ihr natürlich auch im Slack-Channel Fragen zu p5 stellen.
-- Es reicht für die Aufgabe, wenn ihr den Code aus den Wikipedia-Artikeln in Javascript übersetzt, jedoch wäre es gut, wenn ihr versucht grob zu verstehen, was die Algorithmen machen.
+- Es reicht für die Aufgabe, wenn ihr den Code aus den Wikipedia-Artikeln in Javascript übersetzt.
+(Falls ihr dennoch Fragen zu den Algorithmen habt, dürft ihr diese in den Slack-Channel posten. Ich werde versuchen sie zu beantworten.)
 
 ### Beispiele
 
