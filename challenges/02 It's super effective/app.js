@@ -27,15 +27,39 @@ const typeCharactaristics = {
     steel: {fire: 0.5, water: 0.5, electric: 0.5, ice: 2, rock: 2, steel: 0.5, fairy: 2},
     fairy: {fire: 0.5, fighting: 0.5, poison: 0.5, ground: 2, dragon: 2, steel: 0.5}
 }
+/**Speichert alle Requests ab, damit später alle gleichzeitig geladen werden können */
+var promises = [undefined, undefined];
+
 
 rl.question('Lass den Kampf beginnen', (answer) => {
     let actors = splitAnswer(answer);
-    actors = battleComposition(actors);
-
-    let effectivityValue = effectivityCalculation(actors);
-    let answerSentence = giveAnswerFromEffectivityValue(effectivityValue);
-    console.log(answerSentence);
-    rl.close();
+    
+    if(!typeCharactaristics[actors[0]]){
+        promises[0] = getTypeFromAttack(actors[0])
+    }
+    if(!typeCharactaristics[actors[1][0]]) {
+        promises[1] = getTypeFromPokemon(actors[1])
+    }
+   
+        console.log(promises)
+        axios.all(promises)
+            .then((results) => {
+                if(results[0] != undefined) {
+                    actors[0] = results[0].data.type.name;
+                }
+                if(results[1] != undefined) {
+                    let pokemonTypes = [];
+                    results[1].data.types.forEach(type => {
+                        pokemonTypes.push(type.type.name)
+                    })
+                    actors[1] = pokemonTypes
+                }
+                console.log(actors)
+                
+                let effectivityValue = effectivityCalculation(actors);
+                console.log(giveAnswerFromEffectivityValue(effectivityValue));
+                rl.close();
+            })
 })
 
 
@@ -49,7 +73,6 @@ rl.question('Lass den Kampf beginnen', (answer) => {
 function splitAnswer(answer) {
     let attackerAndDefender = answer.split(' -> ');
     attackerAndDefender[1] = attackerAndDefender[1].split(' ');
-    console.log(attackerAndDefender)
     return attackerAndDefender
 }
 
@@ -74,7 +97,6 @@ function battleComposition (targets) {
     else {
         console.log('Kein Typ sondern Attacke');
         composition[0] = getTypeFromAttack(targets[0])
-        setTimeout()
     }
     if(typeCharactaristics[targets[1][0]]) {
         composition[1] = targets[1];
@@ -83,6 +105,7 @@ function battleComposition (targets) {
         console.log('Keine Typen sondern Pokemon')
         composition[1] = getTypeFromPokemon(targets[1])
     }
+    console.log(composition)
     return composition
 }
 
@@ -140,10 +163,7 @@ function giveAnswerFromEffectivityValue(effectValue){
  * @returns {string} - Typ der Attacke.
  */
 function getTypeFromAttack(attack) {
-    axios.get('https://pokeapi.co/api/v2/move/' + attack)
-        .then(response => {
-            return response.data.type.name
-        })
+    return axios.get('https://pokeapi.co/api/v2/move/' + attack)
 }
 
 /**
@@ -153,12 +173,5 @@ function getTypeFromAttack(attack) {
  * @returns {Array} - Array der Typen des Pokemons
  */
 function getTypeFromPokemon(pokemon) {
-    axios.get('https://pokeapi.co/api/v2/pokemon/' + pokemon)
-        .then(response => {
-            let types = [];
-            response.data.types.forEach(type => {
-                types.push(type.type.name)
-            })
-            return response.data
-        })
+    return axios.get('https://pokeapi.co/api/v2/pokemon/' + pokemon)
 }
