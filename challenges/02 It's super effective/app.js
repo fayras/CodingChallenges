@@ -86,19 +86,26 @@ rl.question('Please put in attack and defend types like this: typeAttack -> type
         if (pokemonTypes[attackTypesString] === undefined) {
             axios.get(`http://pokeapi.co/api/v2/move/${attackTypesString.replace(/\s+/ig, '-')}/`).then((response) => {
                     attackType = response.data.type.name
-                    getEffectiveness(pokemonTypes[attackType], splittedDefendTypes)
+                    effectivenessOutput(getEffectiveness(pokemonTypes[attackType], splittedDefendTypes))
                 })
                 .catch((error) => {
                     exitWithError('Could not find attack move or type effect. Error: ' + error.message)
                 })
         } else {
-            getEffectiveness(pokemonTypes[attackType], splittedDefendTypes)
+            effectivenessOutput(getEffectiveness(pokemonTypes[attackType], splittedDefendTypes))
+
         }
 
     }
 
 })
 
+/**
+ * Mulpiplies attack effects strengths and weaknesses against defender effect types
+ * @param  {type:value, ...} attackTypeObject Sub object from pokemonTypes object with key of attack effect type
+ * @param  string[] defendTypes     Array with defender effects type names
+ * @return int   Effectiveness value
+ */
 function getEffectiveness(attackTypeObject, defendTypes) {
     let effectiveness = 1
     defendTypes.forEach((defenderTypeEffect) => {
@@ -108,6 +115,15 @@ function getEffectiveness(attackTypeObject, defendTypes) {
             effectiveness *= attackTypeObject[defenderTypeEffect]
         }
     })
+
+    return effectiveness
+}
+
+/**
+ * Writes evaluated effectivenees to console with description of how much it is effective and its percentage
+ * @param  int effectiveness Effectiveness value
+ */
+function effectivenessOutput(effectiveness) {
     if (effectiveness > 0 && effectiveness < 0.75) {
         console.log('Not very effective (' + effectiveness * 100 + '%)')
     } else if (effectiveness >= 0.75 && effectiveness < 1.5) {
@@ -117,5 +133,4 @@ function getEffectiveness(attackTypeObject, defendTypes) {
     } else {
         console.log('No effect (0%)')
     }
-    return effectiveness
 }
