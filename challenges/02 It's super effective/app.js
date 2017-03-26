@@ -38,7 +38,6 @@ var requestsToDo = [undefined, undefined];
  */
 rl.question('Lass den Vergleich beginnen: ', (answer) => {
     let actors = splitAnswer(answer);
-    
     checkComposition(actors);
     axios.all(requestsToDo)
         .then((results) => {
@@ -97,12 +96,12 @@ function checkComposition(actors) {
  */
 function effectivityCalculation(targets) {
     let attacker = targets[0];
-    let targetTypes = targets[1]
+    let defender = targets[1]
     
     console.log('Der Typ: "' + targets[0] + '" wird mit: "' + targets[1] + '" verglichen.')
     
     let typeValues = []
-    targetTypes.forEach(type => {
+    defender.forEach(type => {
         if(typeCharactaristics[attacker][type] != undefined){
             typeValues.push(typeCharactaristics[attacker][type])
         }
