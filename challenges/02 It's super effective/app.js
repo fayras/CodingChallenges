@@ -71,7 +71,8 @@ function exitWithError(message) {
 //Reads attack and defend types, calculates effectiveness of an attack and writes it to console
 rl.question('Please put in attack and defend types like this: typeAttack -> typeDefendA typeDefendB ...\n', (answer) => {
     const reg = /^\s*(\w+\s+)+\-\>(\s*\w+)+\s*$/i //regular expression to check for right syntax typeA [attackType] -> typeB [typeC] [...]
-    const input = answer.toLowerCase().trim() //trimming our answer, to get rid of spaces before and after first and last letter of answer. Just to ensure everything will be in lower case, we do it extra.
+    const input = answer.toLowerCase().trim() //trimming our answer, to get rid of spaces before and after first and last letter of answer. 
+        ///Just to ensure everything will be in lower case, we do it extra.
     rl.close() // disconnect readline from console stdin, because we already have our input data
     if (input.match(reg) === null) {
         exitWithError('Your input had wrong syntax')
@@ -79,21 +80,20 @@ rl.question('Please put in attack and defend types like this: typeAttack -> type
         const splittedAttackAndDefend = input.split(/\-\>/)
         const attackTypesString = splittedAttackAndDefend[0].trim()
         const defendTypesString = splittedAttackAndDefend[1].trim()
-
-        const splittedDefendTypes = defendTypesString.split(/\s+/)
-
         let attackType = attackTypesString
         if (pokemonTypes[attackTypesString] === undefined) {
-            axios.get(`http://pokeapi.co/api/v2/move/${attackTypesString.replace(/\s+/ig, '-')}/`).then((response) => {
-                    attackType = response.data.type.name
-                    effectivenessOutput(getEffectiveness(pokemonTypes[attackType], splittedDefendTypes))
+            const attackMove = attackTypesString.replace(/\s+/ig, '-') //use replace with regex, to replace all spaces between words with - 
+                ///and use global scope, because otherwise it exits on first word
+            axios.get(`http://pokeapi.co/api/v2/move/${attackMove}`) //get json response from pokemon api by attackMove name
+                .then((response) => {
+                    attackType = response.data.type.name //read effect type from response
+                    checkForPokemonNameAndGetEffectiveness(attackType, defendTypesString)
                 })
                 .catch((error) => {
                     exitWithError('Could not find attack move or type effect. Error: ' + error.message)
                 })
         } else {
-            effectivenessOutput(getEffectiveness(pokemonTypes[attackType], splittedDefendTypes))
-
+            checkForPokemonNameAndGetEffectiveness(attackType, defendTypesString)
         }
 
     }
@@ -101,9 +101,37 @@ rl.question('Please put in attack and defend types like this: typeAttack -> type
 })
 
 /**
+ * Check if we have pokemon name or effect types string and then evaluate effectiveness. If neither of them
+found, then error will be reported
+ * @param  string attackType Attack type
+ * @param  string defendTypesString string of all defend types or pokemon name
+ */
+function checkForPokemonNameAndGetEffectiveness(attackType, defendTypesString) {
+    let defendTypes = defendTypesString.split(/\s+/)
+    if (pokemonTypes[defendTypes[0]] === undefined) { //if first type effect not found, maybe it's pokemon name?, then try to get if from pokemon API
+        const pokemonName = defendTypesString.replace(/\s+/ig, '-') //use replace with regex, to replace all spaces between words with - 
+            ///and use global scope, because otherwise it exits on first word
+        axios.get(`http://pokeapi.co/api/v2/pokemon/${pokemonName}`)
+            .then((response) => {
+                defendTypes = []
+                response.data.types.forEach(function(type) {
+                    defendTypes.push(type.type.name)
+                })
+                effectivenessOutput(getEffectiveness(pokemonTypes[attackType], defendTypes))
+            })
+            .catch((error) => {
+                exitWithError('Could not find pokemon or type effect. Error: ' + error.message)
+            })
+
+    } else {
+        effectivenessOutput(getEffectiveness(pokemonTypes[attackType], defendTypes))
+    }
+}
+
+/**
  * Mulpiplies attack effects strengths and weaknesses against defender effect types
  * @param  {type:value, ...} attackTypeObject Sub object from pokemonTypes object with key of attack effect type
- * @param  string[] defendTypes     Array with defender effects type names
+ * @param  string[] defendTypesString    Array with defender effects type names
  * @return int   Effectiveness value
  */
 function getEffectiveness(attackTypeObject, defendTypes) {
