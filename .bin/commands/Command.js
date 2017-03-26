@@ -20,7 +20,7 @@ class Command {
       return process.cwd();
     }
 
-    return path.resolve([Command.basePath, '..', challenge].join(path.sep));
+    return path.resolve(Command.basePath, '..', challenge);
   }
 
   run() {

@@ -17,7 +17,7 @@ class PublishCommand extends Command {
       }
     });
 
-    const slackPath = [__dirname, '..', '.slack.json'].join(path.sep);
+    const slackPath = path.join(__dirname, '..', '.slack.json');
     if(!fs.existsSync(slackPath)) {
       throw new Error('Slack config file not found.');
     }
@@ -61,7 +61,7 @@ class PublishCommand extends Command {
   run() {
     inquirer.prompt(PublishCommand.questions)
       .then(answers => {
-        const challengeName = fs.readdirSync(`${Command.basePath}/../challenges`)
+        const challengeName = fs.readdirSync(path.join(Command.basePath, '..', 'challenges'))
           .filter(item => item.includes(answers.challenge_name))[0];
 
         if(!challengeName) {
