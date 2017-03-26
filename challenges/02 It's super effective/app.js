@@ -61,11 +61,41 @@ function getPokemonTypeObject(types) {
 //Reads attack and defend types, calculates effectivness of an attack and writes it to console
 rl.question('Please put in attack and defend types like this: typeAttack -> typeDefendA typeDefendB ...\n', (answer) => {
     const reg = /^\w+(\s\w+)?\s?\-\>(\s?\w+)+\s?$/i //regular expression to check for right syntax typeA [attackType] -> typeB [typeC] [...]
-    const input = answer.toLowerCase().trim()
+    const input = answer.toLowerCase().trim() //trimming our answer, to get rid of spaces before and after first and last letter of answer. Just to ensure everything will be in lower case, we do it extra.
+    rl.close() // disconnect readline from console stdin, because we already have our input data
     if (input.match(reg) === null) {
         console.log('Your input had wrong syntax')
+        return
     } else {
+        const splittedAttackAndDefend = input.split(/\-\>/)
+        const attackTypesString = splittedAttackAndDefend[0].trim()
+        const defendTypesString = splittedAttackAndDefend[1].trim()
 
+        const splittedAttackTypes = attackTypesString.split(/\s+/)
+        const attackTypeEffect = splittedAttackTypes[0]
+        const attackType = splittedAttackTypes[1]
+        if (pokemonTypes[attackTypeEffect] === undefined) {
+            console.log('Attack type effect, which you typed in, is unknown')
+            return
+        }
+        const splittedDefendTypes = defendTypesString.split(/\s+/)
+
+        let effectivness = 1
+        splittedDefendTypes.forEach(function(defenderTypeEffect) {
+            if (pokemonTypes[attackTypeEffect][defenderTypeEffect] === undefined) {
+                console.log('One of defending pokemon type effects, which you typed in, is unknown')
+                return
+            } else {
+                effectivness *= pokemonTypes[attackTypeEffect][defenderTypeEffect]
+            }
+        });
+        if (effectivness > 0 && effectivness < 0.75) {
+            console.log('Not very effective (' + effectivness * 100 + '%)')
+        } else if (effectivness >= 0.75 && effectivness < 1.5) {
+            console.log('Normal (' + effectivness * 100 + '%)')
+        } else if (effectivness >= 1.5) {
+            console.log('Super-effective (' + effectivness * 100 + '%)')
+        }
     }
-    rl.close()
+
 })
