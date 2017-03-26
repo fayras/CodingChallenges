@@ -58,8 +58,14 @@ function getPokemonTypeObject(types) {
     }
 }
 
-//Listen to line input in console, that is returned with \r (Enter) and save this to lineInput variable
-rl.on('line', (input) => {
+//Reads attack and defend types, calculates effectivness of an attack and writes it to console
+rl.question('Please put in attack and defend types like this: typeAttack -> typeDefendA typeDefendB ...\n', (answer) => {
+    const reg = /^\w+(\s\w+)?\s?\-\>(\s?\w+)+\s?$/i //regular expression to check for right syntax typeA [attackType] -> typeB [typeC] [...]
+    const input = answer.toLowerCase().trim()
+    if (input.match(reg) === null) {
+        console.log('Your input had wrong syntax')
+    } else {
+
+    }
     rl.close()
-    lineInput = input
 })
