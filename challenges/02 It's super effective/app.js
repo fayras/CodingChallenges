@@ -1,6 +1,5 @@
 const readline = require('readline')
 const axios = require('axios')
-let lineInput = ''
 
 //create readline interface that can use input and output from console
 const rl = readline.createInterface({
