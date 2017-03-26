@@ -15,8 +15,12 @@ class DocsCommand extends Command {
           '01': [
             `${__dirname}/../../../solutions/01 Goldilocks\' Bear Necessities/**/*.js`,
             `${__dirname}/../../../solutions/01 Goldilocks\' Bear Necessities/README.md`,
+            `!${__dirname}/../../../solutions/01 Goldilocks\' Bear Necessities/node_modules/**`
           ],
-          '02': `${__dirname}/../../../solutions/02 It\'s super effective/**/*.js`,
+          '02': [
+            `${__dirname}/../../../solutions/02 It\'s super effective/**/*.js`,
+            `!${__dirname}/../../../solutions/02 It\'s super effective/node_modules/**`,
+          ]
         }
       ],
       dest: '/home/dimitri/Code/CodingChallenges/docs',
@@ -25,7 +29,7 @@ class DocsCommand extends Command {
         server: 'github'
       },
       jsdoc: {
-        excludePattern: '(node_modules/|docs)',
+        excludePattern: '(docs)',
         plugins: [
           "node_modules/jsdoc-strip-async-await"
         ]
