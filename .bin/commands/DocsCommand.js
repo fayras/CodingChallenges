@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const slug = require('slug');
 const Command = require('./Command.js');
 const SpawnCommand = require('./SpawnCommand.js');
 const Docma = require('docma');
@@ -33,7 +34,20 @@ class DocsCommand extends Command {
         options: {
           title: 'Coding Challenges',
           symbolMeta: true,
-          outline: 'tree'
+          outline: 'tree',
+          navItems: [
+            {
+              label: "Challenges",
+              iconClass: "ico-book",
+              items: []
+            },
+            {
+              label: "GitHub",
+              href: "https://github.com/fayras/CodingChallenges/",
+              target: "_blank",
+              iconClass: "ico-md ico-github"
+            }
+          ]
         }
       }
     };
@@ -50,25 +64,27 @@ class DocsCommand extends Command {
   }
 
   generate(challengeNumbers) {
-    let _path = path.join(Command.basePath, '..', 'challenges');
+    let _path = path.join(Command.basePath, '..', 'solutions');
     let challenges = fs.readdirSync(_path);
 
     if(challenges.length !== 0) {
       challenges = challenges.filter(item => new RegExp(this.args._.join('|')).test(item));
     }
-    //console.log(this.args);
-    //console.log(challenges);
-    //return;
-    //challeges = challenges.map(file => path.join(_path, file));
 
     let options = this.options;
 
     for(let challenge of challenges) {
-      options.src[0][challenge] = [
+      let hash = slug(challenge);
+      options.src[0][hash] = [
         path.join(_path, challenge, '**', '*.js'),
         path.join(_path, challenge, 'README.md'),
         '!' + path.join(_path, challenge, 'node_modules', '**')
       ];
+
+      options.template.options.navItems[0].items.push({
+        label: challenge,
+        href: '?api=' + hash
+      });
     }
 
     Docma.create().build(options)
