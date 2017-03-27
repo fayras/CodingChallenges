@@ -3,7 +3,7 @@ const path = require('path');
 const minimist = require('minimist');
 
 class Command {
-  constructor(args, options = null) {
+  constructor(args = '', options = null) {
     if(typeof args === 'string') {
       args = args.split(' ');
     }
