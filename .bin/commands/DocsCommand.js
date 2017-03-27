@@ -7,6 +7,7 @@ const Docma = require('docma');
 class DocsCommand extends Command {
   constructor(args) {
     super(args, {
+      boolean: true,
       alias: {
         'g': 'generate',
         's': 'serve'
@@ -16,19 +17,7 @@ class DocsCommand extends Command {
 
   get options() {
     return {
-      src: [
-        {
-          '01': [
-            `${__dirname}/../../solutions/01 Goldilocks\' Bear Necessities/**/*.js`,
-            `${__dirname}/../../solutions/01 Goldilocks\' Bear Necessities/README.md`,
-            `!${__dirname}/../../solutions/01 Goldilocks\' Bear Necessities/node_modules/**`
-          ],
-          '02': [
-            `${__dirname}/../../solutions/02 It\'s super effective/**/*.js`,
-            `!${__dirname}/../../solutions/02 It\'s super effective/node_modules/**`,
-          ]
-        }
-      ],
+      src: [{}],
       dest: '/home/dimitri/Code/CodingChallenges/docs',
       app: {
         title: 'Coding Challenges Docs',
@@ -51,20 +40,48 @@ class DocsCommand extends Command {
   }
 
   run() {
-    console.log(this.args);
-    if(this.args.generate && this.args._.length === 0) {
-      Docma.create().build(this.options)
-        .then(function (success) {
-          console.log('Documentation is built successfully.');
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+    if(this.args.generate) {
+      this.generate(this.args._);
     }
 
     if(this.args.serve) {
-      new SpawnCommand('node static_server.js ../docs', { cwd: Command.basePath }).run();
+      this.serve();
     }
+  }
+
+  generate(challengeNumbers) {
+    let _path = path.join(Command.basePath, '..', 'challenges');
+    let challenges = fs.readdirSync(_path);
+
+    if(challenges.length !== 0) {
+      challenges = challenges.filter(item => new RegExp(this.args._.join('|')).test(item));
+    }
+    //console.log(this.args);
+    //console.log(challenges);
+    //return;
+    //challeges = challenges.map(file => path.join(_path, file));
+
+    let options = this.options;
+
+    for(let challenge of challenges) {
+      options.src[0][challenge] = [
+        path.join(_path, challenge, '**', '*.js'),
+        path.join(_path, challenge, 'README.md'),
+        '!' + path.join(_path, challenge, 'node_modules', '**')
+      ];
+    }
+
+    Docma.create().build(options)
+      .then(function (success) {
+        console.log('Documentation is built successfully.');
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  serve() {
+    new SpawnCommand('node static_server.js ../docs', { cwd: Command.basePath }).run();
   }
 }
 
