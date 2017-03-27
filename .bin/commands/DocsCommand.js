@@ -1,12 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 const Command = require('./Command.js');
+const SpawnCommand = require('./SpawnCommand.js');
 const Docma = require('docma');
 
 class DocsCommand extends Command {
   constructor(args) {
     super(args, {
-      alias: {'g': 'generate'}
+      alias: {
+        'g': 'generate',
+        's': 'serve'
+      }
     });
   }
 
@@ -49,14 +53,17 @@ class DocsCommand extends Command {
   run() {
     console.log(this.args);
     if(this.args.generate && this.args._.length === 0) {
-      Docma.create()
-        .build(this.options)
+      Docma.create().build(this.options)
         .then(function (success) {
           console.log('Documentation is built successfully.');
         })
         .catch(function (error) {
           console.log(error);
         });
+    }
+
+    if(this.args.serve) {
+      new SpawnCommand('node static_server.js ../docs', { cwd: Command.basePath }).run();
     }
   }
 }
