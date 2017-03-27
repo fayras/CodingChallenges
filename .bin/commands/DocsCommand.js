@@ -5,7 +5,9 @@ const Docma = require('docma');
 
 class DocsCommand extends Command {
   constructor(args) {
-    super(args);
+    super(args, {
+      alias: {'g': 'generate'}
+    });
   }
 
   get options() {
