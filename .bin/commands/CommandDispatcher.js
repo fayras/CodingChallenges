@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -8,9 +9,9 @@ class CommandDispatcher {
   constructor(args) {
     const commandName = capitalize(args[0]);
 
-    let commandPath = `${__dirname}/${commandName}Command.js`;
+    let commandPath = path.join(__dirname, `${commandName}Command.js`);
     if(!fs.existsSync(commandPath)) {
-      commandPath = `${__dirname}/UnknownCommand.js`;
+      commandPath = path.join(__dirname, `UnknownCommand.js`);
     }
 
     const Command = require(commandPath);

@@ -3,7 +3,7 @@ const path = require('path');
 const minimist = require('minimist');
 
 class Command {
-  constructor(args, options = null) {
+  constructor(args = '', options = null) {
     if(typeof args === 'string') {
       args = args.split(' ');
     }
@@ -20,7 +20,7 @@ class Command {
       return process.cwd();
     }
 
-    return path.resolve([Command.basePath, '..', challenge].join(path.sep));
+    return path.resolve(Command.basePath, '..', challenge);
   }
 
   run() {

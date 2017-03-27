@@ -24,8 +24,8 @@ class NewCommand extends Command {
       type = 'p5';
     }
 
-    const templatePath = [Command.basePath, 'templates', type, ''].join(path.sep);
-    const targetPath = [Command.basePath, '..', 'challenges', this.args.name, ''].join(path.sep);
+    const templatePath = path.join(Command.basePath, 'templates', type);
+    const targetPath = path.join(Command.basePath, '..', 'challenges', this.args.name);
 
     fs.readdir(templatePath, (err, files) => {
       if(err) {
@@ -33,7 +33,7 @@ class NewCommand extends Command {
       }
 
       for(const file of files) {
-        NewCommand.copyAndReplace(templatePath + file, targetPath + file, this.args.name);
+        NewCommand.copyAndReplace(path.join(templatePath, file), path.join(targetPath, file), this.args.name);
         console.info(`File ${file} created.`);
       }
     });

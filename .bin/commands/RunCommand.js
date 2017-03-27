@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const Command = require('./Command.js');
 const SpawnCommand = require('./SpawnCommand.js');
 
@@ -13,13 +14,13 @@ class RunCommand extends Command {
   }
 
   installDependencies() {
-    const path = Command.getPath(this.args._[0]);
-    const packagejson = require(`${path}/package.json`);
+    const _path = Command.getPath(this.args._[0]);
+    const packagejson = require(path.join(_path, 'package.json'));
 
-    if(!fs.existsSync(`${path}/node_modules`) && packagejson.dependencies) {
+    if(!fs.existsSync(path.join(_path, 'node_modules')) && packagejson.dependencies) {
       console.info('Node modules not found. Installing missing dependencies...');
       new SpawnCommand('npm install', {
-        cwd: path,
+        cwd: _path,
         sync: true
       }).run();
     }
