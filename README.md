@@ -18,15 +18,17 @@ Alle Aufgaben sollten verutlich mit jeder Node-Version kompatibel sein, um Fehle
 
 
 Sobald ihr das Repository geklont habt, könnt ihr einmal `npm run init` ausführen. Danach stehen euch folgende Befehle zur Verfügung:
-```
-challenge new --name=NAME [--electron]
-```
-<i>Nur dann interessant, wenn es ums Erzeugen von neuen Aufgaben geht.</i>
 
 ```
 challenge run|start [challenge/NAME_DER_AUFGABE]
 ```
 <i>Führt ihr diesen Befehl aus dem obersten Verzeichnis aus, so müsst ihr den Pfad zur Aufgabe angeben. Befindet ihr euch in dem Ordner der Aufgabe, reicht nur 'challenge run' oder 'challenge start'. (run und start sind beide Aliasse und tun genau das selbe.)</i>
+
+```
+challenge docs --generate
+challenge docs --serve
+```
+<i>Generiert anhand der Kommentare im Code eine Doku für die einzelnen Aufgaben, welche mit der Option `--serve` als lokaler Webserver unter `http://localhost:8000/` zur Verfügung steht.</i>
 
 ```
 challenge help
