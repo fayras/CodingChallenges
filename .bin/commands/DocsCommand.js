@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const Command = require('../Command.js');
+const Command = require('./Command.js');
 const Docma = require('docma');
 
 class DocsCommand extends Command {
@@ -8,18 +8,18 @@ class DocsCommand extends Command {
     super(args);
   }
 
-  static get options() {
+  get options() {
     return {
       src: [
         {
           '01': [
-            `${__dirname}/../../../solutions/01 Goldilocks\' Bear Necessities/**/*.js`,
-            `${__dirname}/../../../solutions/01 Goldilocks\' Bear Necessities/README.md`,
-            `!${__dirname}/../../../solutions/01 Goldilocks\' Bear Necessities/node_modules/**`
+            `${__dirname}/../../solutions/01 Goldilocks\' Bear Necessities/**/*.js`,
+            `${__dirname}/../../solutions/01 Goldilocks\' Bear Necessities/README.md`,
+            `!${__dirname}/../../solutions/01 Goldilocks\' Bear Necessities/node_modules/**`
           ],
           '02': [
-            `${__dirname}/../../../solutions/02 It\'s super effective/**/*.js`,
-            `!${__dirname}/../../../solutions/02 It\'s super effective/node_modules/**`,
+            `${__dirname}/../../solutions/02 It\'s super effective/**/*.js`,
+            `!${__dirname}/../../solutions/02 It\'s super effective/node_modules/**`,
           ]
         }
       ],
@@ -45,9 +45,10 @@ class DocsCommand extends Command {
   }
 
   run() {
-    if(this.args._.length === 0) {
+    console.log(this.args);
+    if(this.args.generate && this.args._.length === 0) {
       Docma.create()
-        .build(DocsCommand.options)
+        .build(this.options)
         .then(function (success) {
           console.log('Documentation is built successfully.');
         })
