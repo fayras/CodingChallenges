@@ -99,13 +99,12 @@ function effectivityCalculation(targets) {
     
     console.log('Der Typ: "' + targets[0] + '" wird mit: "' + targets[1] + '" verglichen.')
     
-    let typeValues = []
-    defender.forEach(type => {
+    let typeValues = defender.map(type => {
         if(typeCharactaristics[attacker][type] != undefined){
-            typeValues.push(typeCharactaristics[attacker][type])
+            return typeCharactaristics[attacker][type]
         }
         else {
-            typeValues.push(1);
+            return 1
         }
     })
     return typeValues.reduce((a, b) => a * b);
