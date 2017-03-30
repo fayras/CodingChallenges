@@ -30,9 +30,6 @@ const typeCharactaristics = {
     fairy: {fire: 0.5, fighting: 0.5, poison: 0.5, ground: 2, dragon: 2, steel: 0.5}
 }
 
-/**Speichert alle Requests ab, die später nötig sind. */
-var requestsToDo = [undefined, undefined];
-
 /**
  * Stellt eine Frage im Terminal und erwartet eine Antwort.
  * Auf Basis der Antwort wird der Vergleich der Typen vorgenommen und
@@ -40,7 +37,7 @@ var requestsToDo = [undefined, undefined];
  */
 rl.question('Lass den Vergleich beginnen: ', (answer) => {
     let actors = splitAnswer(answer);
-    checkComposition(actors);
+    let requestsToDo = checkComposition(actors);
     axios.all(requestsToDo)
         .then((results) => {
             if(results[0] != undefined) {
@@ -81,12 +78,14 @@ function splitAnswer(answer) {
  * @param actors {Array} - Beinhaltet Typen, Attacke und Pokemon.
  */
 function checkComposition(actors) {
+    let requests= [undefined, undefined]
     if(!typeCharactaristics[actors[0]]){
-        requestsToDo[0] = getTypeFromAttack(actors[0])
+        requests[0] = getTypeFromAttack(actors[0])
     }
     if(!typeCharactaristics[actors[1][0]]) {
-        requestsToDo[1] = getTypeFromPokemon(actors[1])
+        requests[1] = getTypeFromPokemon(actors[1])
     }
+    return requests
 }
 /**
  * Berechnet die Effektivität zwischen Angreifer-Typ und Verteidiger-Typ.
