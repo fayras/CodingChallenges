@@ -44,11 +44,9 @@ rl.question('Lass den Vergleich beginnen: ', (answer) => {
                 actors[0] = results[0].data.type.name;
             }
             if(results[1] != undefined) {   //results[1] ist genau dann nicht undefined, wenn ein Api-Aufruf für ein Pokemon stattgefunden hat.
-                let pokemonTypes = [];
-                results[1].data.types.forEach(type => {
-                    pokemonTypes.push(type.type.name)
+                actors[1] = results[1].data.types.map((pokemonType) => {
+                    return pokemonType.type.name
                 })
-                actors[1] = pokemonTypes
             }
             
             let effectivityValue = effectivityCalculation(actors);
