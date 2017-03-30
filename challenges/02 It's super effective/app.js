@@ -44,7 +44,7 @@ rl.question('Lass den Vergleich beginnen: ', (answer) => {
                 actors[0] = results[0].data.type.name;
             }
             if(results[1] != undefined) {   //results[1] ist genau dann nicht undefined, wenn ein Api-Aufruf für ein Pokemon stattgefunden hat.
-                actors[1] = results[1].data.types.map((pokemonType) => {
+                actors[1] = results[1].data.types.map(pokemonType => {
                     return pokemonType.type.name
                 })
             }
@@ -118,20 +118,18 @@ function effectivityCalculation(targets) {
  * @returns {string} - Der Antwortsatz, der angezeigt werden soll.
  */
 function giveAnswerFromEffectivityValue(effectValue){
-    let answer = '';
     if(effectValue === 0) {
-        answer = 'No effect';
+        return 'No effect';
     }
     else if(effectValue > 0 && effectValue < 0.75) {
-        answer = 'Not very effective'
+        return 'Not very effective'
     }
     else if(effectValue >= 0.75 && effectValue < 1.5) {
-        answer = 'Normal'
+        return 'Normal'
     }
     else {
-        answer = 'Super-effective'
+        return 'Super-effective'
     }
-    return answer
 }
 
 /**
