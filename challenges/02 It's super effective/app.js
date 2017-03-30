@@ -40,10 +40,10 @@ rl.question('Lass den Vergleich beginnen: ', (answer) => {
     let requestsToDo = checkComposition(actors);
     axios.all(requestsToDo)
         .then((results) => {
-            if(results[0] != undefined) {
+            if(results[0] != undefined) {   //results[0] ist genau dann nicht undefined, wenn ein Api-Aufruf für eine Attacke stattgefunden hat.
                 actors[0] = results[0].data.type.name;
             }
-            if(results[1] != undefined) {
+            if(results[1] != undefined) {   //results[1] ist genau dann nicht undefined, wenn ein Api-Aufruf für ein Pokemon stattgefunden hat.
                 let pokemonTypes = [];
                 results[1].data.types.forEach(type => {
                     pokemonTypes.push(type.type.name)
