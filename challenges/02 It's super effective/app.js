@@ -6,7 +6,9 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-/** Enthält alle Typen und deren Effekte gegenüber anderen Typen. */
+/** Enthält alle Typen und deren Effekte, welche von 1 abweichen,
+ *  gegenüber anderen Typen.
+ */
 const typeCharactaristics = {
     normal: {rock: 0.5, ghost: 0, steel: 0.5},
     fire: {fire: 0.5, water: 0.5, grass: 2, ice: 2, bug: 2, rock: 0.5, dragon: 0.5, steel: 2},
