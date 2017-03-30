@@ -59,7 +59,7 @@ rl.question('Lass den Vergleich beginnen: ', (answer) => {
  * Unterteilt den eingegebenen String in Angreifer und Verteidiger.
  *
  * @param answer {string} - Benutzereingabe mit Angreifer und Verteidiger.
- * @returns {Array|*} - Enthält auf: Index 0 -> Angreifer.
+ * @returns {Array} - Enthält auf: Index 0 -> Angreifer.
  *                                   Index 1 -> Array aus Verteidigern.
  */
 function splitAnswer(answer) {
