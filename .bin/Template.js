@@ -11,7 +11,11 @@ Mark.pipes.eol = function (str) {
 
 class Template {
   constructor(data, options = {}) {
-    this.options = options;
+    this.options = Object.assign({
+      stripLeadingWhitespaces: true,
+      oneLine: false
+    }, options);
+
     this.data = this.prepare(data);
   }
 
@@ -20,8 +24,8 @@ class Template {
   }
 
   prepare(data) {
-    let stripLeadingWhitespaces = this.options.stripLeadingWhitespaces || true;
-    data = stripLeadingWhitespaces ? this.stripLeadingWhitespaces(data) : data;
+    data = this.stripLeadingWhitespaces(data);
+    data = this.convertToOneLine(data);
     return data;
   }
 
@@ -34,22 +38,22 @@ class Template {
       }
 
       let count = val.indexOf(val.trim());
-      if(count < min) {
-        return count;
-      } else {
-        return min;
-      }
+      return Math.min(count, min);
     }, Number.MAX_VALUE);
 
     tokens = tokens.map(item => {
       return item.substr(minSpacesCount);
     });
 
+    return tokens.join('\n').trim();
+  }
+
+  convertToOneLine(data) {
     if(this.options.oneLine) {
-      return tokens.join(' ').trim();
+      return data.split('\n').join(' ').trim();
     }
 
-    return tokens.join('\n').trim();
+    return data;
   }
 }
 
