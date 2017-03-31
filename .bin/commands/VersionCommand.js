@@ -40,11 +40,11 @@ class VersionCommand extends Command {
 
       ## {{ version }} _- {{ date }}_
       {{if changes.added}}### Added
-      {{ changes.added }}- {{ . | eol }}{{ /changes.added }}
+      {{changes.added}}- {{ . | eol }}{{/changes.added}}
       {{/if}}{{if changes.changed}}### Changed
-      {{ changes.changed }}- {{ . | eol }}{{ /changes.changed }}
+      {{changes.changed}}- {{ . | eol }}{{/changes.changed}}
       {{/if}}{{if changes.fixed}}### Fixed
-      {{ changes.fixed }}- {{ . | eol }}{{ /changes.fixed }}{{/if}}
+      {{changes.fixed}}- {{ . | eol }}{{/changes.fixed}}{{/if}}
     `);
 
     let file = path.join(Command.basePath, 'CHANGELOG.md');
