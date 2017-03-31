@@ -17,6 +17,7 @@
     "docma": "^1.5.1",
     "inquirer": "^3.0.6",
     "jsdoc-strip-async-await": "^0.1.0",
+    "markup-js": "^1.5.21",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.18.1",
