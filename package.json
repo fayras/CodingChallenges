@@ -9,7 +9,9 @@
     "challenge": ".bin/challenge.js"
   },
   "scripts": {
-    "init": "npm link && npm install"
+    "init": "npm link && npm install",
+    "version": "challenge version --changelog && git add .",
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "docma": "^1.5.1",

@@ -1,10 +1,15 @@
 const Command = require('./Command.js');
+const SpawnCommand = require('./SpawnCommand.js');
 const inquirer = require('inquirer');
+const fs = require('fs');
+const path = require('path');
 
 class VersionCommand extends Command {
   constructor(args) {
     super(args);
-    this.changes = [];
+    this.changes = [
+      '<!-- CHANGES -->\n\n## 1.1.6'
+    ];
   }
 
   static get changePrompt() {
@@ -26,18 +31,22 @@ class VersionCommand extends Command {
   }
 
   writeChangelog(changes) {
-    console.log(changes);
+    let file = path.join(Command.basePath, 'CHANGELOG.md');
+    let data = fs.readFileSync(file).toString();
+    data = data.replace('<!-- CHANGES -->', changes.join('\n- '));
+
+    fs.writeFileSync(file, data);
   }
 
   run() {
-    if(this.args._.length < 1) {
-      throw new Error('Version parameter missing.');
+    if(this.args._.length < 1 && this.args.changelog) {
+      console.info("\x1b[1m\nBitte Änderungen eingeben... \nJede Änderung mit Enter bestätigen, leere Eingabe beendet den Prompt.\n\x1b[0m");
+      inquirer.prompt(VersionCommand.changePrompt)
+        .then(answer => this.askForChange(answer));
+    } else {
+      let version = this.args._[0];
+      new SpawnCommand(`npm version ${version} -m "Upgrade to version %s" --force`, { cwd: Command.basePath }).run();
     }
-
-    let version = this.args._[0];
-    console.info("\x1b[1m\nBitte Änderungen eingeben... \nJede Änderung mit Enter bestätigen, leere Eingabe beendet den Prompt.\n\x1b[0m");
-    inquirer.prompt(VersionCommand.changePrompt)
-      .then(answer => this.askForChange(answer));
   }
 }
 
