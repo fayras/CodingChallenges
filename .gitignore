@@ -35,3 +35,4 @@ docs/
 # Slack Integration
 .slack.json
 .bin/.slack.json
+.bin/.config.json

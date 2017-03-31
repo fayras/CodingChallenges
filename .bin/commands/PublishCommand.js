@@ -17,12 +17,12 @@ class PublishCommand extends Command {
       }
     });
 
-    const slackPath = path.join(__dirname, '..', '.slack.json');
-    if(!fs.existsSync(slackPath)) {
-      throw new Error('Slack config file not found.');
+    const configPath = path.join(__dirname, '..', '.config.json');
+    if(!fs.existsSync(configPath)) {
+      throw new Error('Config file not found.');
     }
 
-    this.slackConfig = require(slackPath);
+    this.slackConfig = require(configPath).slack;
   }
 
   static get questions() {
