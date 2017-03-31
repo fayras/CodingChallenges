@@ -5,6 +5,10 @@ Mark.pipes.slug = function (str) {
     return slug(str);
 };
 
+Mark.pipes.eol = function (str) {
+    return str + '\n';
+};
+
 class Template {
   constructor(data, options = {}) {
     this.options = options;

@@ -4,6 +4,7 @@ const moment = require('moment');
 const inquirer = require('inquirer');
 const Command = require('./Command.js');
 const SpawnCommand = require('./SpawnCommand.js');
+const Template = require('./../Template.js');
 
 class VersionCommand extends Command {
   constructor(args) {
@@ -22,11 +23,9 @@ class VersionCommand extends Command {
 
     if(pAnswer) {
       if (!pAnswer.change) {
-        //this.writeChangelog(this.changes);
         return [];
       }
 
-      //this.changes.push(pAnswer.change);
       answers.push(pAnswer.change);
     }
 
@@ -36,16 +35,26 @@ class VersionCommand extends Command {
   }
 
   writeChangelog(changes) {
+    let template = new Template(`
+      <!-- CHANGES -->
+
+      ## {{version}} _- {{date}}_
+      {{if changes.added}}### Added
+      {{changes.added}}- {{.|eol}}{{/changes.added}}
+      {{/if}}{{if changes.changed}}### Changed
+      {{changes.changed}}- {{.|eol}}{{/changes.changed}}
+      {{/if}}{{if changes.fixed}}### Fixed
+      {{changes.fixed}}- {{.|eol}}{{/changes.fixed}}{{/if}}
+    `);
+
     let file = path.join(Command.basePath, 'CHANGELOG.md');
     let data = fs.readFileSync(file).toString();
-    let newVersion = require(path.join(Command.basePath, 'package.json')).version;
-    let currentDate = moment().format('DD.MM.YYYY');
 
-    let added = changes.added.length ? `\n### Added \n- ${changes.added.join('\n- ')}` : '';
-    let changed = changes.changed.length ? `\n### Changed \n- ${changes.changed.join('\n- ')}` : '';
-    let fixed = changes.fixed.length ? `\n### Fixed \n- ${changes.fixed.join('\n- ')}` : '';
-
-    let newChanges = `<!-- CHANGES -->\n\n## ${newVersion} _- ${currentDate}_${added}\n${changed}\n${fixed}`;
+    let newChanges = template.render({
+      version: require(path.join(Command.basePath, 'package.json')).version,
+      date: moment().format('DD.MM.YYYY'),
+      changes: changes
+    });
 
     data = data.replace('<!-- CHANGES -->', newChanges);
 
