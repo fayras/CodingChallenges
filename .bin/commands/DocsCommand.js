@@ -66,7 +66,7 @@ class DocsCommand extends Command {
   }
 
   generate(challengeNumbers) {
-    let _path = path.join(Command.basePath, '..', 'challenges');
+    let _path = path.join(Command.basePath, 'challenges');
     let challenges = fs.readdirSync(_path);
 
     if(challenges.length !== 0) {
@@ -99,7 +99,7 @@ class DocsCommand extends Command {
   }
 
   serve() {
-    new SpawnCommand('node static_server.js ../docs', { cwd: Command.basePath }).run();
+    new SpawnCommand('node static_server.js ../docs', { cwd: path.join(Command.basePath, '.bin') }).run();
   }
 }
 

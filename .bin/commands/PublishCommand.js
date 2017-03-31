@@ -61,7 +61,7 @@ class PublishCommand extends Command {
   run() {
     inquirer.prompt(PublishCommand.questions)
       .then(answers => {
-        const challengeName = fs.readdirSync(path.join(Command.basePath, '..', 'challenges'))
+        const challengeName = fs.readdirSync(path.join(Command.basePath, 'challenges'))
           .filter(item => item.includes(answers.challenge_name))[0];
 
         if(!challengeName) {

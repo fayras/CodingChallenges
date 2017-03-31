@@ -24,8 +24,8 @@ class NewCommand extends Command {
       type = 'p5';
     }
 
-    const templatePath = path.join(Command.basePath, 'templates', type);
-    const targetPath = path.join(Command.basePath, '..', 'challenges', this.args.name);
+    const templatePath = path.join(Command.basePath, '.bin', 'templates', type);
+    const targetPath = path.join(Command.basePath, 'challenges', this.args.name);
 
     fs.readdir(templatePath, (err, files) => {
       if(err) {
