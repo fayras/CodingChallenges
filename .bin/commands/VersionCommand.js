@@ -39,11 +39,11 @@ class VersionCommand extends Command {
       <!-- CHANGES -->
 
       ## {{ version }} _- {{ date }}_
-      {{if changes.added}}### Added
+      {{if changes.added}}#### Added
       {{changes.added}}- {{ . | eol }}{{/changes.added}}
-      {{/if}}{{if changes.changed}}### Changed
+      {{/if}}{{if changes.changed}}#### Changed
       {{changes.changed}}- {{ . | eol }}{{/changes.changed}}
-      {{/if}}{{if changes.fixed}}### Fixed
+      {{/if}}{{if changes.fixed}}#### Fixed
       {{changes.fixed}}- {{ . | eol }}{{/changes.fixed}}{{/if}}
     `);
 
