@@ -33,8 +33,8 @@ class VersionCommand extends Command {
     let file = path.join(Command.basePath, 'CHANGELOG.md');
     let data = fs.readFileSync(file).toString();
     let newVersion = require(path.join(Command.basePath, 'package.json')).version;
-    let currentDate = moment().format('%d.%m.%Y');
-    let newChanges = `<!-- CHANGES -->\n\n## ${newVersion} _- ${currentDate}_\n${changes.join('\n- ')}`;
+    let currentDate = moment().format('DD.MM.YYYY');
+    let newChanges = `<!-- CHANGES -->\n\n## ${newVersion} _- ${currentDate}_\n- ${changes.join('\n- ')}`;
     data = data.replace('<!-- CHANGES -->', newChanges);
 
     fs.writeFileSync(file, data);
