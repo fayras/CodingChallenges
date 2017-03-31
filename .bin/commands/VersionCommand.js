@@ -35,6 +35,7 @@ class VersionCommand extends Command {
     }
 
     let version = this.args._[0];
+    console.info('Bitte Änderungen eingeben. Jede Änderung mit Enter bestätigen, leere Eingabe beendet den Prompt.');
     inquirer.prompt(VersionCommand.changePrompt)
       .then(answer => this.askForChange(answer));
   }
