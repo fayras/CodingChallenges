@@ -19,6 +19,7 @@
     "jsdoc-strip-async-await": "^0.1.0",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
+    "moment": "^2.18.1",
     "pretty-error": "^2.0.2",
     "slug": "^0.9.1"
   }

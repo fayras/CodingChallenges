@@ -3,13 +3,12 @@ const SpawnCommand = require('./SpawnCommand.js');
 const inquirer = require('inquirer');
 const fs = require('fs');
 const path = require('path');
+const moment = require('moment');
 
 class VersionCommand extends Command {
   constructor(args) {
     super(args);
-    this.changes = [
-      '<!-- CHANGES -->\n\n## 1.1.6'
-    ];
+    this.changes = [];
   }
 
   static get changePrompt() {
@@ -33,7 +32,10 @@ class VersionCommand extends Command {
   writeChangelog(changes) {
     let file = path.join(Command.basePath, 'CHANGELOG.md');
     let data = fs.readFileSync(file).toString();
-    data = data.replace('<!-- CHANGES -->', changes.join('\n- '));
+    let newVersion = require(path.join(Command.basePath, 'package.json')).version;
+    let currentDate = moment().format('%d.%m.%Y');
+    let newChanges = `<!-- CHANGES -->\n\n## ${newVersion} _- ${currentDate}_\n${changes.join('\n- ')}`;
+    data = data.replace('<!-- CHANGES -->', newChanges);
 
     fs.writeFileSync(file, data);
   }
@@ -45,7 +47,7 @@ class VersionCommand extends Command {
         .then(answer => this.askForChange(answer));
     } else {
       let version = this.args._[0];
-      new SpawnCommand(`npm version ${version} -m "Upgrade to version %s" --force`, { cwd: Command.basePath }).run();
+      new SpawnCommand(`npm version ${version} -m "Upgrade to version %s"`, { cwd: Command.basePath }).run();
     }
   }
 }
