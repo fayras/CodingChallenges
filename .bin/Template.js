@@ -30,6 +30,10 @@ class Template {
   }
 
   stripLeadingWhitespaces(data) {
+    if(!this.options.stripLeadingWhitespaces) {
+      return data;
+    }
+
     let tokens = data.split('\n');
 
     let minSpacesCount = tokens.reduce((min, val) => {
@@ -41,19 +45,17 @@ class Template {
       return Math.min(count, min);
     }, Number.MAX_VALUE);
 
-    tokens = tokens.map(item => {
+    return tokens.map(item => {
       return item.substr(minSpacesCount);
-    });
-
-    return tokens.join('\n').trim();
+    }).join('\n').trim();
   }
 
   convertToOneLine(data) {
-    if(this.options.oneLine) {
-      return data.split('\n').join(' ').trim();
+    if(!this.options.oneLine) {
+      return data;
     }
 
-    return data;
+    return data.split('\n').join(' ').trim();
   }
 }
 
