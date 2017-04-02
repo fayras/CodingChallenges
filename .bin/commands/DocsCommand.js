@@ -26,7 +26,7 @@ class DocsCommand extends Command {
       },
       jsdoc: {
         excludePattern: '(docs)',
-        hierarchy: true,
+        access: 'all',
         sort: 'grouped',
         plugins: [
           "node_modules/jsdoc-strip-async-await"
@@ -66,7 +66,11 @@ class DocsCommand extends Command {
   }
 
   generate(challengeNumbers) {
-    let _path = path.join(Command.basePath, 'challenges');
+    let type = 'challenges';
+    if(this.args.solutions) {
+      type = 'solutions';
+    }
+    let _path = path.join(Command.basePath, type);
     let challenges = fs.readdirSync(_path);
 
     if(challenges.length !== 0) {
