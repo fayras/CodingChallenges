@@ -93,8 +93,7 @@ rl.question('Please put in attack and defend types like this: typeAttack -> type
 
             axios.get(`http://pokeapi.co/api/v2/move/${attackMove}`) //get json response from pokemon api by attackMove name
                 .then((response) => {
-                    attackTypesString = response.data.type.name //read effect type from response
-                    checkForPokemonNameAndGetEffectiveness(attackTypesString, defendTypesString)
+                    checkForPokemonNameAndGetEffectiveness(response.data.type.name, defendTypesString)
                 })
                 .catch((error) => {
                     exitWithError('Could not find attack move or type effect. Error: ' + error.message)
@@ -124,9 +123,8 @@ function checkForPokemonNameAndGetEffectiveness(attackType, defendTypesString) {
 
         axios.get(`http://pokeapi.co/api/v2/pokemon/${pokemonName}`)
             .then((response) => {
-                defendTypes = []
-                response.data.types.forEach(function(type) {
-                    defendTypes.push(type.type.name)
+                defendTypes = response.data.types.map((type) => {
+                    return type.type.name
                 })
                 effectivenessOutput(getEffectiveness(pokemonTypes[attackType], defendTypes))
             })
@@ -147,14 +145,13 @@ function checkForPokemonNameAndGetEffectiveness(attackType, defendTypesString) {
  */
 function getEffectiveness(attackTypeObject, defendTypes) {
     let effectiveness = 1
-    defendTypes.forEach((defenderTypeEffect) => {
+    effectiveness = defendTypes.reduce((sum, defenderTypeEffect) => {
         if (attackTypeObject[defenderTypeEffect] === undefined) {
             exitWithError('One of defending pokemon type effects, which you typed in, is unknown')
         } else {
-            effectiveness *= attackTypeObject[defenderTypeEffect]
+            return sum * attackTypeObject[defenderTypeEffect]
         }
-    })
-
+    }, 1)
     return effectiveness
 }
 
