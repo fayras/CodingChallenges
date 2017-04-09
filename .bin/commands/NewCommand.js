@@ -3,6 +3,7 @@ const path = require('path');
 const slug = require('slug');
 const mkdirp = require('mkdirp');
 const Command = require('./Command.js');
+const Template = require('./../Template.js');
 
 class NewCommand extends Command {
   constructor(args) {
@@ -24,8 +25,8 @@ class NewCommand extends Command {
       type = 'p5';
     }
 
-    const templatePath = path.join(Command.basePath, 'templates', type);
-    const targetPath = path.join(Command.basePath, '..', 'challenges', this.args.name);
+    const templatePath = path.join(Command.basePath, '.bin', 'templates', type);
+    const targetPath = path.join(Command.basePath, 'challenges', this.args.name);
 
     fs.readdir(templatePath, (err, files) => {
       if(err) {
@@ -42,14 +43,10 @@ class NewCommand extends Command {
   static copyAndReplace(from, to, replacement) {
     let data = fs.readFileSync(from).toString();
 
-    if (from.includes('package.json')) {
-      data = data.replace(/{{ title }}/g, slug(replacement).toLowerCase());
-    } else {
-      data = data.replace(/{{ title }}/g, replacement);
-    }
+    let template = new Template(data);
 
     mkdirp.sync(path.dirname(to));
-    fs.writeFileSync(to, data);
+    fs.writeFileSync(to, template.render({ title: replacement }));
   }
 }
 

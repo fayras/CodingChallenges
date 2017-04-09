@@ -12,7 +12,7 @@ class Command {
   }
 
   static get basePath() {
-    return path.dirname(fs.realpathSync(process.argv[1])) + path.sep;
+    return path.join(path.dirname(fs.realpathSync(process.argv[1])), '..');
   }
 
   static getPath(challenge) {
@@ -20,7 +20,7 @@ class Command {
       return process.cwd();
     }
 
-    return path.resolve(Command.basePath, '..', challenge);
+    return path.resolve(Command.basePath, challenge);
   }
 
   run() {

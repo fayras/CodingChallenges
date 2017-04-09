@@ -1,5 +1,5 @@
 {
-  "name": "{{ title }}",
+  "name": "{{ title | slug | downcase }}",
   "version": "1.0.0",
   "main": "app.js",
   "license": "MIT",

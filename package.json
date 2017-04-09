@@ -1,6 +1,6 @@
 {
   "name": "coding-challenges",
-  "version": "1.1.4",
+  "version": "1.1.7",
   "description": "Coding Challenges",
   "author": "Dimitri Tarnavski",
   "license": "ISC",
@@ -9,14 +9,18 @@
     "challenge": ".bin/challenge.js"
   },
   "scripts": {
-    "init": "npm link && npm install"
+    "init": "npm link && npm install",
+    "version": "challenge version --changelog && git add .",
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "docma": "^1.5.1",
     "inquirer": "^3.0.6",
     "jsdoc-strip-async-await": "^0.1.0",
+    "markup-js": "^1.5.21",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
+    "moment": "^2.18.1",
     "pretty-error": "^2.0.2",
     "slug": "^0.9.1"
   }
