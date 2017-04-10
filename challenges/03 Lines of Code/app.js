@@ -50,6 +50,7 @@ new p5(sketch => {
         // Vergleich wird nochmals interessant, wenn PIXEL_SIZE
         // auf 1 gesetzt wird, so dass 1 "echter" Pixel gleich
         // einem Pixel auf dem Grid ist.
+        sketch.stroke(0);
         sketch.line(X1, Y1 + 400, X2, Y2 + 400);
 
         // Stoppt die Draw-Schleife, so dass sketch.draw
