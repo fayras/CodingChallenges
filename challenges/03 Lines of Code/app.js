@@ -25,7 +25,7 @@ new p5(sketch => {
 
         // Kreiere eine neue Grid-Instanz mit der Pixelgröße PIXEL_SIZE. Die
         // restlichen Parameter müssen ergänzt werden, falls benötigt.
-        grid = new Grid(PIXEL_SIZE);
+        grid = new Grid(sketch, PIXEL_SIZE);
     };
 
     /**
@@ -42,8 +42,8 @@ new p5(sketch => {
 
         // Zeiche die Linien, welche sich auf dem Grid
         // anstatt auf dem "echten" Canvas befinden.
-        grid.line({ x: X1, y: Y1 }, { x: X2, y: Y2 }, 1);
-        grid.line({ x: X1, y: Y1 + 200 }, { x: X2, y: Y2 + 200 }, 2);
+        grid.line({ x: X1, y: Y1 }, { x: X2, y: Y2 }, false);
+        grid.line({ x: X1, y: Y1 + 200 }, { x: X2, y: Y2 + 200 }, true);
 
         // Zeiche zusätzlich zu den Linien auf dem Grid eine Linie
         // auf dem "echten" Canvas, um diese zu vergleichen. Der

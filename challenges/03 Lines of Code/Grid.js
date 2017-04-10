@@ -1,17 +1,30 @@
 class Grid {
-    constructor(pixelSize) {
+    /**
+     * [constructor description]
+
+     * @param  {[type]} sketch    [description]
+     * @param  {[type]} pixelSize [description]
+     * @return {[type]}           [description]
+     */
+    constructor(sketch, pixelSize) {
         this.cellSize = pixelSize;
-        this.columns = parseInt(window.innerWidth / this.cellSize);
-        this.rows = parseInt(window.innerHeight / this.cellSize);
+        this.columns = Math.round(window.innerWidth / this.cellSize);
+        this.rows = Math.round(window.innerHeight / this.cellSize);
+        this.sketch = sketch;
+        this.grid = []
         this.createGrid();
-        console.log(sketch);
     }
 
     /**
-     * Creates grid from this.columns and this.rows properties
+     * initialise grid with columns and rows in array
      */
-    createGrid {
-
+    createGrid() {
+        for (let x = 0; x < this.columns; x++) {
+            this.grid[x] = [];
+            for (let y = 0; y < this.rows; y++) {
+                this.grid[x][y] = 0;
+            }
+        }
     }
 
     /**
@@ -21,8 +34,47 @@ class Grid {
      * @param  {Number} x2 x-coordinate from second point
      * @param  {Number} y2 y-coordinate from second point
      */
-    bresenhamLine(x1, y1, x2, y2) {
+    bresenhamLine(x0, y0, x1, y1) {
+        const dx = Math.abs(x1 - x0);
+        const dy = Math.abs(y1 - y0);
+        const sx = (x0 < x1) ? 1 : -1;
+        const sy = (y0 < y1) ? 1 : -1;
+        let err = dx - dy;
 
+        while (true) {
+            this.setPixel(Math.round(x0 / this.cellSize), Math.round(y0 / this.cellSize), 255);
+
+            if ((x0 == x1) && (y0 == y1)) break;
+            const e2 = 2 * err;
+            if (e2 > -dy) {
+                err -= dy;
+                x0 += sx;
+            }
+            if (e2 < dx) {
+                err += dx;
+                y0 += sy;
+            }
+        }
+        this.grid.forEach((rows, column) => {
+            rows.forEach((value, row) => {
+                if (value && value > 0) {
+
+                    this.sketch.fill(this.sketch.color('black'));
+                    this.sketch.rect(column * this.cellSize, row * this.cellSize, this.cellSize, this.cellSize);
+                }
+            });
+        });
+        this.sketch.fill(255);
+    }
+
+    /**
+     * [setPixel description]
+     * @param {Integer} col column in the grid
+     * @param {Integer} row row in the grid
+     * @param {Integer} value alpha value from 0-255
+     */
+    setPixel(col, row, value) {
+        this.grid[col][row] = value;
     }
 
     /**
@@ -37,37 +89,17 @@ class Grid {
     }
 
     /**
-     * Draw simple line on the grid
-     * @param  {Object} p1   First point object with x and y coordinates
-     * @param  {Object} p2   Second point object with x and y coordinates
-     * @param  {int} type Draw line algorithm (0 -- normal, 1 -- bresenham, 2 -- Xiaolin Wu)
-     */
-    normalLine(x1, y1, x2, y2) {
-
-    }
-
-    /**
      * Draw line on the grid
      * @param  {Object} p1   First point object with x and y coordinates
      * @param  {Object} p2   Second point object with x and y coordinates
-     * @param  {int} type Draw line algorithm (0 -- normal, 1 -- bresenham, 2 -- Xiaolin Wu)
+     * @param  {bool} Draw line with antialiasing
      */
-    line(p1, p2, type) {
-        switch (type) {
-            default: break;
-            case 0:
-                    this.normalLine(p1.x, p1.y, p2.x, p2.y);
-                break;
-            case 1:
-                    this.bresenhamLine(p1.x, p1.y, p2.x, p2.y);
-                break;
-            case 2:
-                    this.xiaolinWuLine(p1.x, p1.y, p2.x, p2.y);
-                break;
+    line(p1, p2, antialiasing) {
+        if (antialiasing) {
+            this.xiaolinWuLine(p1.x, p1.y, p2.x, p2.y);
+        } else {
+            this.bresenhamLine(p1.x, p1.y, p2.x, p2.y);
         }
-
-
-
     }
 }
 
