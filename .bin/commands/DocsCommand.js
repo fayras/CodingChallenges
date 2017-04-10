@@ -19,7 +19,7 @@ class DocsCommand extends Command {
   get options() {
     return {
       src: [{}],
-      dest: '/home/dimitri/Code/CodingChallenges/docs',
+      dest: Command.basePath + '/docs',
       app: {
         title: 'Coding Challenges Docs',
         server: 'github'
