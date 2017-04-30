@@ -47,7 +47,7 @@ M                         z
  N O P Q R S T U V W X Y Z
 ```
 
-Dieses Gitter wird dann mit "Spiegeln" befüllt, diese sind gegeben durch "/" und "\". Man fängt bei einem Buchstaben an und "schauet" in eine Richtung, den Buchstaben, den man am Ende "sieht", ist der verschlüsselte Buchstabe. Beispiel:
+Dieses Gitter wird dann mit "Spiegeln" befüllt, diese sind gegeben durch "/" und "\\". Man fängt bei einem Buchstaben an und "schauet" in eine Richtung, den Buchstaben, den man am Ende "sieht", ist der verschlüsselte Buchstabe. Beispiel:
 
 Mit der Verschlüsselung
 ```
