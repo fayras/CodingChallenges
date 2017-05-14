@@ -1,0 +1,14 @@
+{
+  "name": "06-lorenz-attractor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "electron": "^1.7.0",
+    "three": "^0.85.2"
+  }
+}
