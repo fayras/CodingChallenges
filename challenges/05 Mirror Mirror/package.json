@@ -1,0 +1,10 @@
+{
+  "name": "05-mirror-mirror",
+  "version": "1.0.0",
+  "main": "app.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node ."
+  }
+}
