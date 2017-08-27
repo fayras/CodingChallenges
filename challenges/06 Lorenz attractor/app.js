@@ -1,5 +1,6 @@
 const THREE = require('three');
 const Controls = require('./Controls.js');
+const LorenzAttractor = require('./LorenzAttractor.js');
 
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -9,10 +10,11 @@ const height = window.innerHeight;
 var scene = new THREE.Scene();
 // Eine neue Kamera, mit FOV = 75, und einer Reichweite bis 1000.
 var camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+camera.position.z = 80;
 
 // Erzeugt eine neue Instanz zum Kontrollieren der Kamera,
 // so dass die Szene mit der Maus bewegt werden kann.
-controls = new Controls( camera );
+controls = new Controls(camera);
 controls.rotateSpeed = 1.0;
 controls.zoomSpeed = 1.2;
 controls.panSpeed = 0.8;
@@ -27,14 +29,14 @@ var renderer = new THREE.WebGLRenderer();
 renderer.setSize(width, height);
 document.body.appendChild(renderer.domElement);
 
-
-// Objekte zur Scene hinzufügen.
-
+const attractor = new LorenzAttractor(10, 28, 8/3);
+scene.add(attractor);
 
 // Funktion, welche die Szene rendert. Wird immer
 // wieder aufgerufen, idealerweise mit 60 FPS.
 (function render() {
-  requestAnimationFrame(render);
+  attractor.update();
   renderer.render(scene, camera);
   controls.update();
+  requestAnimationFrame(render);
 })();
