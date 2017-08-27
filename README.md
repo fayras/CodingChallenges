@@ -4,20 +4,6 @@ Eine Ansammlung verschiedener Programmieraufgaben.
 Alle zwei Wochen gibt es eine neue Aufgabe, welche innerhalb der nächsten zwei Wochen bearbeitet werden soll.
 Alle Aufgaben werden in der Node.js Umgebung gebaut, Informationen zu einzelnen Aufgaben gibt es immer in dem Ordner der Aufgabe.
 
-## Abgabefristen
-
-Aufgabe 06 - Abgabe bis: 28. Mai 2017 23:59
-
-~~Aufgabe 05 - Abgabe bis: 14. Mai 2017 23:59~~
-
-~~Aufgabe 04 - Abgabe bis: 30. April 2017 23:59~~
-
-~~Aufgabe 03 - Abgabe bis: 09. April 2017 23:59~~
-
-~~Aufgabe 02 - Abgabe bis: 26. März 2017 23:59~~
-
-~~Aufgabe 01 - Abgabe bis: 19. März 2017 23:59~~
-
 ## Erste Schritte
 
 Alle Aufgaben sollten verutlich mit jeder Node-Version kompatibel sein, um Fehler auf Grund von verschiedenen Versionen zu vermeiden, wird Node 7.5+ und npm 4.1+ empfohlen. Welche Version installiert ist, kann mit `node -v` oder `npm -v` überprüft werden.
